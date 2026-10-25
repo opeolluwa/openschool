@@ -38,8 +38,8 @@ export const footerSections: FooterLinkSection[] = [
   {
     title: "Community",
     links: [
-      { label: "GitHub", to: "https://github.com/openschool", external: true },
-      { label: "Discussions", to: "https://github.com/openschool/discussions", external: true },
+      { label: "GitHub", to: "https://github.com/opeolluwa/openschool", external: true },
+      { label: "Discussions", to: "https://github.com/opeolluwa/openschool/discussions", external: true },
       { label: "Contributing", to: "/public/docs/contributing" },
     ],
   },
@@ -54,7 +54,7 @@ export const footerSections: FooterLinkSection[] = [
 ];
 
 export const socialLinks: HomepageRouteItem[] = [
-  { label: "GitHub", to: "https://github.com/openschool", icon: "ri:github-line", external: true },
+  { label: "GitHub", to: "https://github.com/opeolluwa/openschool", icon: "ri:github-line", external: true },
   { label: "Discord", to: "#", icon: "ri:discord-line", external: true },
   { label: "Twitter / X", to: "#", icon: "ri:twitter-x-fill", external: true },
   { label: "YouTube", to: "#", icon: "ri:youtube-line", external: true },
