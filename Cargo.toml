@@ -3,6 +3,10 @@ name = "openschool"
 version = "0.1.0"
 edition = "2024"
 
+[workspace]
+resolver = "3"
+members = ["event-bus", "macros", "mailman"]
+version = "0.1.0"
 
 [lib]
 name = "lib_openschool"
@@ -15,13 +19,6 @@ path = "src/bin/openschool.rs"
 [[bin]]
 name = "openschool-cli"
 path = "src/bin/cli.rs"
-
-
-
-[workspace]
-resolver="3"
-members = ["event-bus","macros", "mailman"]
-version = "0.1.0"
 
 [dependencies]
 ammonia = "4.1"
@@ -89,7 +86,6 @@ sea-orm = { version = "2.0.2", features = ["sqlx-sqlite"] }
 secrecy = { version = "0.10.3", features = ["serde"] }
 serde_json = "1.0.140"
 tokio = { version = "1.44.2", features = ["full", "macros"] }
-
 
 [profile.release]
 opt-level = 3
