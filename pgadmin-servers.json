@@ -1,0 +1,15 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "openschool Dev DB",
+      "Group": "Servers",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "openschool",
+      "Username": "openschool",
+      "Password": "openschool",
+      "SSLMode": "prefer",
+      "SavePassword": true
+    }
+  }
+}
