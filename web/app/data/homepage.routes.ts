@@ -12,7 +12,6 @@ export interface FooterLinkSection {
 
 export const headerNavigation: HomepageRouteItem[] = [
   { label: "Features", to: "/#features", icon: "ri:stack-line" },
-  { label: "Pricing", to: "/public/pricing", icon: "ri:price-tag-3-line" },
   { label: "Docs", to: "/public/docs", icon: "ri:book-open-line" },
   { label: "Community", to: "/public/community", icon: "ri:team-line" },
 ];
@@ -22,7 +21,6 @@ export const footerSections: FooterLinkSection[] = [
     title: "Product",
     links: [
       { label: "Features", to: "/#features" },
-      { label: "Pricing", to: "/public/pricing" },
       { label: "Self-Hosting", to: "/public/docs/self-hosting" },
       { label: "Demo", to: "/public/demo" },
       { label: "Changelog", to: "/public/changelog" },
