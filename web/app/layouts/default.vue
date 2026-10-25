@@ -7,7 +7,9 @@ import RyderDefault from "@opeolluwa/ryder/layouts/RyderDefault.vue";
             <HomepageHeader />
         </template>
 
-        <slot />
+        <main class="pt-[68px] lg:pt-[72px]">
+            <slot />
+        </main>
         <template #footer>
              <HomepageFooter /> 
         </template>

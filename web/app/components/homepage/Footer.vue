@@ -1,36 +1,5 @@
 <script setup lang="ts">
-const links = {
-  Product: [
-    { name: "Features", href: "/#features" },
-    { name: "Pricing", href: "/pricing" },
-    { name: "Self-Hosting", href: "/docs/self-hosting" },
-    { name: "Demo", href: "/demo" },
-    { name: "Changelog", href: "/changelog" },
-  ],
-  Resources: [
-    { name: "Documentation", href: "/docs" },
-    { name: "API Reference", href: "/docs/api" },
-    { name: "Tutorials", href: "/docs/tutorials" },
-    { name: "Blog", href: "/blog" },
-  ],
-  Community: [
-    { name: "GitHub", href: "https://github.com/openschool" },
-    { name: "Discussions", href: "https://github.com/openschool/discussions" },
-    { name: "Contributing", href: "/docs/contributing" },
-  ],
-  Legal: [
-    { name: "Privacy Policy", href: "/privacy-policy" },
-    { name: "Terms of Service", href: "/terms" },
-    { name: "License", href: "/license" },
-  ],
-};
-
-const socials = [
-  { name: "GitHub", href: "https://github.com/openschool", icon: "ri:github-line" },
-  { name: "Discord", href: "#", icon: "ri:discord-line" },
-  { name: "Twitter / X", href: "#", icon: "ri:twitter-x-fill" },
-  { name: "YouTube", href: "#", icon: "ri:youtube-line" },
-];
+import { footerSections, socialLinks, isExternalLink } from "~/data/homepage.routes";
 </script>
 
 <template>
@@ -57,28 +26,28 @@ const socials = [
 
         <!-- Link columns -->
         <div
-          v-for="(items, section) in links"
-          :key="section"
+          v-for="section in footerSections"
+          :key="section.title"
           class="space-y-4"
         >
-          <p class="text-sm font-semibold text-white">{{ section }}</p>
+          <p class="text-sm font-semibold text-white">{{ section.title }}</p>
           <ul class="space-y-3">
-            <li v-for="item in items" :key="item.name">
+            <li v-for="item in section.links" :key="item.label">
               <a
-                v-if="item.href.startsWith('http')"
-                :href="item.href"
+                v-if="isExternalLink(item)"
+                :href="item.to"
                 target="_blank"
                 rel="noreferrer"
                 class="text-sm text-gray-400 hover:text-white transition"
               >
-                {{ item.name }}
+                {{ item.label }}
               </a>
               <NuxtLink
                 v-else
-                :to="item.href"
+                :to="item.to"
                 class="text-sm text-gray-400 hover:text-white transition"
               >
-                {{ item.name }}
+                {{ item.label }}
               </NuxtLink>
             </li>
           </ul>
@@ -96,13 +65,13 @@ const socials = [
 
         <div class="flex items-center gap-5">
           <a
-            v-for="social in socials"
-            :key="social.name"
-            :href="social.href"
+            v-for="social in socialLinks"
+            :key="social.label"
+            :href="social.to"
             rel="noreferrer"
             target="_blank"
             class="text-gray-400 hover:text-white transition"
-            :aria-label="social.name"
+            :aria-label="social.label"
           >
             <UIcon :name="social.icon" class="size-5" />
           </a>

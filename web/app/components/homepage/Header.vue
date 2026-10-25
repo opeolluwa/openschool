@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { headerNavigation } from "~/data/homepage.routes";
+
+const navigation = headerNavigation;
 const mobileMenuOpen = ref(false);
 const route = useRoute();
 
@@ -40,13 +43,6 @@ function isActive(href: string) {
   if (href.startsWith("/#")) return route.path === "/";
   return href === "/" ? route.path === href : route.path.startsWith(href);
 }
-
-const navigation = [
-  { name: "Features", href: "/#features", icon: "ri:stack-line" },
-  { name: "Pricing", href: "/pricing", icon: "ri:price-tag-3-line" },
-  { name: "Docs", href: "/docs", icon: "ri:book-open-line" },
-  { name: "Community", href: "/community", icon: "ri:team-line" },
-];
 </script>
 
 <template>
@@ -82,17 +78,17 @@ const navigation = [
       <div class="hidden lg:flex lg:gap-x-1">
         <NuxtLink
           v-for="item in navigation"
-          :key="item.name"
-          :to="item.href"
+          :key="item.label"
+          :to="item.to"
           class="relative text-sm font-medium px-4 py-2 transition-all duration-200 text-gray-700 dark:text-onyx-100 hover:text-primary-500 dark:hover:text-primary-400"
           :class="
-            isActive(item.href) ? 'text-primary-600 dark:text-primary-400' : ''
+            isActive(item.to) ? 'text-primary-600 dark:text-primary-400' : ''
           "
         >
-          {{ item.name }}
+          {{ item.label }}
           <span
             class="absolute left-4 right-4 bottom-0 h-0.5 rounded-full bg-primary-500 transition-all duration-300 origin-left"
-            :class="isActive(item.href) ? 'scale-x-100' : 'scale-x-0'"
+            :class="isActive(item.to) ? 'scale-x-100' : 'scale-x-0'"
           />
         </NuxtLink>
       </div>
@@ -102,7 +98,7 @@ const navigation = [
         class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-3"
       >
         <UColorModeButton />
-        <NuxtLink to="/get-started">
+        <NuxtLink to="/public/get-started">
           <RyderButton size="sm" color="primary" variant="solid">
             Get Started
           </RyderButton>
@@ -158,15 +154,15 @@ const navigation = [
           <div class="px-4 py-2">
             <NuxtLink
               v-for="item in navigation"
-              :key="item.name"
-              :to="item.href"
+              :key="item.label"
+              :to="item.to"
               class="flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-medium text-gray-700 dark:text-onyx-100 hover:text-white hover:bg-primary-500 transition-colors duration-150"
-              :class="isActive(item.href) ? 'bg-primary-500 text-white' : ''"
+              :class="isActive(item.to) ? 'bg-primary-500 text-white' : ''"
               @click="mobileMenuOpen = false"
             >
               <div class="flex items-center gap-3">
                 <UIcon :name="item.icon" class="size-5" />
-                {{ item.name }}
+                {{ item.label }}
               </div>
               <UIcon
                 name="ri:arrow-right-s-line"
@@ -175,7 +171,7 @@ const navigation = [
             </NuxtLink>
 
             <NuxtLink
-              to="/get-started"
+              to="/public/get-started"
               class="flex items-center justify-between px-4 py-3.5 mt-1 rounded-xl font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors duration-150"
               @click="mobileMenuOpen = false"
             >
