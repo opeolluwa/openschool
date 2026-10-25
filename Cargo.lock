@@ -5,3 +5,15 @@ version = 4
 [[package]]
 name = "openschool"
 version = "0.1.0"
+
+[[package]]
+name = "openschool_event_bus"
+version = "0.1.0"
+
+[[package]]
+name = "openschool_macros"
+version = "0.1.0"
+
+[[package]]
+name = "openschool_mailman"
+version = "0.1.0"

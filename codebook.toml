@@ -1,1 +1,4 @@
-words = ["openschool"]
+words = [
+    "cli",
+    "openschool",
+]
