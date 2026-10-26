@@ -18,7 +18,12 @@ impl MigrationTrait for Migration {
                 Table::create()
                     .table(ADMISSION_GUARDIAN_CONTACT_ADDRESS_TABLE)
                     .col(ColumnDef::new("identifier").binary_len(16).primary_key())
-                    .col(ColumnDef::new("guardian_identifier").binary_len(16).not_null().unique_key())
+                    .col(
+                        ColumnDef::new("guardian_identifier")
+                            .binary_len(16)
+                            .not_null()
+                            .unique_key(),
+                    )
                     .col(string("address_line_one"))
                     .col(string_null("address_line_two"))
                     .col(string("city"))

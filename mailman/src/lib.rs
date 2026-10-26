@@ -12,6 +12,7 @@
 
 #![allow(async_fn_in_trait)]
 
+pub mod adapter;
 pub mod config;
 pub mod contract;
 pub mod engine;
@@ -22,7 +23,6 @@ pub mod processor;
 pub mod publisher;
 pub mod sanitize;
 pub mod smtp;
-pub mod adapter;
 
 use openschool_event_bus::QueueEngine;
 

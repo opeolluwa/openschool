@@ -4,7 +4,7 @@ use openschool_kernel::env::extract_env;
 use secrecy::SecretString;
 use serde::{Deserialize, Serialize};
 
-use crate::{errors::app_error::AppError};
+use crate::errors::app_error::AppError;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct AppConfig {
@@ -19,6 +19,9 @@ pub struct AppConfig {
     pub body_limit_megabytes: usize,
 
     // Storage
+    #[serde(default = "default_file_storage_provider")]
+    pub file_storage_provider: FileStorageProvider,
+
     #[serde(default = "default_upload_path")]
     pub upload_path: String,
 
@@ -87,6 +90,20 @@ pub struct AppConfig {
     pub imagekit_private_key: SecretString,
     #[serde(default = "default_imagekit_upload_url")]
     pub imagekit_upload_url: String,
+    pub imagekit_folder: Option<String>,
+
+    // AWS S3
+    pub s3_bucket: String,
+    #[serde(default = "default_s3_region")]
+    pub s3_region: String,
+    pub s3_access_key_id: SecretString,
+    pub s3_secret_access_key: SecretString,
+    pub s3_session_token: Option<SecretString>,
+    pub s3_endpoint: Option<String>,
+    #[serde(default)]
+    pub s3_force_path_style: bool,
+    pub s3_public_base_url: Option<String>,
+    pub s3_key_prefix: Option<String>,
 
     // payment providers
     pub paystack_api_key: SecretString,
@@ -130,6 +147,9 @@ impl AppConfig {
         let email_provider =
             extract_env("EMAIL_PROVIDER").unwrap_or_else(|_| default_email_provider());
 
+        let file_storage_provider = extract_env("FILE_STORAGE_PROVIDER")
+            .unwrap_or_else(|_| default_file_storage_provider());
+
         let smtp_tls_mode =
             extract_env("SMTP_TLS_MODE").unwrap_or_else(|_| default_smtp_tls_mode());
 
@@ -170,6 +190,79 @@ impl AppConfig {
             }
         }
 
+        // Storage credentials follow the same rule as email: only the selected
+        // provider has to be complete, so an S3 deployment does not need
+        // ImageKit keys and vice versa.
+        let imagekit_public_key =
+            extract_optional_env::<String>("IMAGEKIT_PUBLIC_KEY").unwrap_or_default();
+        let imagekit_private_key =
+            extract_optional_env::<String>("IMAGEKIT_PRIVATE_KEY").unwrap_or_default();
+        let imagekit_folder = extract_optional_env::<String>("IMAGEKIT_FOLDER")
+            .filter(|folder| !folder.trim().is_empty());
+
+        let s3_bucket = extract_optional_env::<String>("S3_BUCKET").unwrap_or_default();
+        let s3_region =
+            extract_optional_env::<String>("S3_REGION").unwrap_or_else(default_s3_region);
+        let s3_access_key_id =
+            extract_optional_env::<String>("S3_ACCESS_KEY_ID").unwrap_or_default();
+        let s3_secret_access_key =
+            extract_optional_env::<String>("S3_SECRET_ACCESS_KEY").unwrap_or_default();
+        let s3_session_token = extract_optional_env::<String>("S3_SESSION_TOKEN")
+            .filter(|token| !token.trim().is_empty())
+            .map(SecretString::from);
+        let s3_endpoint = extract_optional_env::<String>("S3_ENDPOINT")
+            .filter(|endpoint| !endpoint.trim().is_empty());
+        let s3_force_path_style =
+            extract_optional_env::<bool>("S3_FORCE_PATH_STYLE").unwrap_or_default();
+        let s3_public_base_url = extract_optional_env::<String>("S3_PUBLIC_BASE_URL")
+            .filter(|base_url| !base_url.trim().is_empty());
+        let s3_key_prefix = extract_optional_env::<String>("S3_KEY_PREFIX")
+            .filter(|prefix| !prefix.trim().is_empty());
+
+        match file_storage_provider {
+            FileStorageProvider::Imagekit => {
+                if imagekit_public_key.trim().is_empty() {
+                    return Err(AppError::EnvError(
+                        "IMAGEKIT_PUBLIC_KEY is required when FILE_STORAGE_PROVIDER=imagekit"
+                            .to_string(),
+                    ));
+                }
+
+                if imagekit_private_key.trim().is_empty() {
+                    return Err(AppError::EnvError(
+                        "IMAGEKIT_PRIVATE_KEY is required when FILE_STORAGE_PROVIDER=imagekit"
+                            .to_string(),
+                    ));
+                }
+            }
+            FileStorageProvider::S3 => {
+                if s3_bucket.trim().is_empty() {
+                    return Err(AppError::EnvError(
+                        "S3_BUCKET is required when FILE_STORAGE_PROVIDER=s3".to_string(),
+                    ));
+                }
+
+                if s3_region.trim().is_empty() {
+                    return Err(AppError::EnvError(
+                        "S3_REGION is required when FILE_STORAGE_PROVIDER=s3".to_string(),
+                    ));
+                }
+
+                if s3_access_key_id.trim().is_empty() {
+                    return Err(AppError::EnvError(
+                        "S3_ACCESS_KEY_ID is required when FILE_STORAGE_PROVIDER=s3".to_string(),
+                    ));
+                }
+
+                if s3_secret_access_key.trim().is_empty() {
+                    return Err(AppError::EnvError(
+                        "S3_SECRET_ACCESS_KEY is required when FILE_STORAGE_PROVIDER=s3"
+                            .to_string(),
+                    ));
+                }
+            }
+        }
+
         Ok(Self {
             // Server
             port: extract_env("PORT").unwrap_or_else(|_| default_port()),
@@ -178,6 +271,7 @@ impl AppConfig {
                 .unwrap_or_else(|_| default_body_limit_megabytes()),
 
             // Storage
+            file_storage_provider,
             upload_path: extract_env("UPLOAD_PATH").unwrap_or_else(|_| default_upload_path()),
             export_path: extract_env("EXPORT_PATH").unwrap_or_else(|_| default_export_path()),
 
@@ -247,13 +341,23 @@ impl AppConfig {
             rate_limit_otp_per_hour: extract_env("RATE_LIMIT_OTP_PER_HOUR")
                 .unwrap_or_else(|_| default_rate_limit_otp_per_hour()),
 
-            imagekit_private_key: SecretString::from(extract_env::<String>(
-                "IMAGEKIT_PRIVATE_KEY",
-            )?),
-
-            imagekit_public_key: SecretString::from(extract_env::<String>("IMAGEKIT_PUBLIC_KEY")?),
+            imagekit_private_key: SecretString::from(imagekit_private_key),
+            imagekit_public_key: SecretString::from(imagekit_public_key),
             imagekit_upload_url: extract_env::<String>("IMAGEKIT_UPLOAD_URL")
                 .unwrap_or_else(|_| default_imagekit_upload_url()),
+            imagekit_folder,
+
+            // AWS S3
+            s3_bucket,
+            s3_region,
+            s3_access_key_id: SecretString::from(s3_access_key_id),
+            s3_secret_access_key: SecretString::from(s3_secret_access_key),
+            s3_session_token,
+            s3_endpoint,
+            s3_force_path_style,
+            s3_public_base_url,
+            s3_key_prefix,
+
             redis_url: SecretString::from(extract_env::<String>("REDIS_CONNECTION_URL")?),
 
             // Token TTLs
@@ -359,6 +463,35 @@ impl std::fmt::Display for EmailProvider {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum FileStorageProvider {
+    #[default]
+    Imagekit,
+    S3,
+}
+
+impl FromStr for FileStorageProvider {
+    type Err = String;
+
+    fn from_str(value: &str) -> Result<Self, Self::Err> {
+        match value.to_lowercase().as_str() {
+            "imagekit" | "image-kit" => Ok(Self::Imagekit),
+            "s3" | "aws" | "aws-s3" => Ok(Self::S3),
+            _ => Err(format!("Invalid file storage provider: {value}")),
+        }
+    }
+}
+
+impl std::fmt::Display for FileStorageProvider {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Imagekit => f.write_str("imagekit"),
+            Self::S3 => f.write_str("s3"),
+        }
+    }
+}
+
 /// `none` is plaintext and only valid outside production; it exists so local
 /// development can point at a plain SMTP sink such as maildev.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -398,6 +531,14 @@ fn default_smtp_tls_mode() -> SmtpTlsMode {
 
 fn default_email_provider() -> EmailProvider {
     EmailProvider::default()
+}
+
+fn default_file_storage_provider() -> FileStorageProvider {
+    FileStorageProvider::default()
+}
+
+fn default_s3_region() -> String {
+    "us-east-1".to_string()
 }
 
 fn default_email_from_address() -> String {

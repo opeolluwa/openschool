@@ -66,6 +66,7 @@ migrate-add target:
         --enum-extra-attributes 'serde(rename_all = "snake_case")' \
         --model-extra-attributes 'serde(rename_all="camelCase")' \
         --model-extra-attributes 'openschool_macros::ts_rs_export_sea_orm_entity_name' \
+        --model-extra-attributes 'openschool_macros::stringify_ulid_identifiers' \
         --ignore-tables openschool_server_migrations \
         -o src/models
 
