@@ -45,4 +45,4 @@ CMD ["cargo", "watch", \
      "-w", "templates", \
      "-w", "/macros", \
      "-x", "check", \
-     "-x", "run"]
+     "-x", "run --bin openschool"]

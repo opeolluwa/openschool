@@ -1,7 +1,7 @@
 services:
   
   app:
-    container_name: backoffice
+    container_name: openschool
     build:
       context: .
       dockerfile: docker/dev/Dockerfile
@@ -109,7 +109,7 @@ services:
   #   environment:
   #     ZOOKEEPER_CLIENT_PORT: 2181
   #     ZOOKEEPER_TICK_TIME: 2000
-  #   ports:
+  #   ports:utils
   #     - "2181:2181"
   #   networks:
   #     - internal
