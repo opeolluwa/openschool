@@ -10,9 +10,7 @@ use secrecy::{ExposeSecret, SecretString};
 use serde::Deserialize;
 
 use crate::{
-    config::ImagekitConfig,
-    contract::FileStoreProvider,
-    error::FileStoreError,
+    config::ImagekitConfig, contract::FileStoreProvider, error::FileStoreError,
     key::sanitize_file_name,
 };
 
@@ -72,7 +70,9 @@ impl FileStoreProvider for ImagekitProvider {
             part = part.mime_str(content_type)?;
         }
 
-        let mut form = multipart::Form::new().part("file", part).text("fileName", file_name);
+        let mut form = multipart::Form::new()
+            .part("file", part)
+            .text("fileName", file_name);
 
         if let Some(folder) = &self.folder {
             form = form.text("folder", folder.clone());
@@ -108,4 +108,142 @@ fn truncate_body(body: &str) -> String {
     const MAX_BODY_LEN: usize = 512;
 
     body.chars().take(MAX_BODY_LEN).collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use std::io::Write;
+
+    use secrecy::SecretString;
+    use tempfile::NamedTempFile;
+    use tokio::{
+        io::{AsyncReadExt, AsyncWriteExt},
+        net::TcpListener,
+    };
+
+    use super::*;
+
+    fn provider(upload_url: String) -> ImagekitProvider {
+        ImagekitProvider::new(&ImagekitConfig {
+            public_key: SecretString::from("test-public"),
+            private_key: SecretString::from("test-private"),
+            upload_url,
+            folder: None,
+        })
+        .unwrap()
+    }
+
+    /// Serves one HTTP request and returns both the request text and the body
+    /// ImageKit would send back.
+    async fn serve_once(
+        status: &'static str,
+        response_body: &'static str,
+    ) -> (String, tokio::task::JoinHandle<String>) {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+
+        let handle = tokio::spawn(async move {
+            let (mut socket, _) = listener.accept().await.unwrap();
+            let mut request = Vec::new();
+            let mut buffer = [0_u8; 4096];
+            let mut header_end = None;
+            let mut content_length = 0_usize;
+
+            loop {
+                let read = socket.read(&mut buffer).await.unwrap();
+
+                if read == 0 {
+                    break;
+                }
+
+                request.extend_from_slice(&buffer[..read]);
+
+                if header_end.is_none()
+                    && let Some(position) = find_header_end(&request)
+                {
+                    header_end = Some(position);
+
+                    let headers = String::from_utf8_lossy(&request[..position]);
+                    for line in headers.lines() {
+                        if let Some((name, value)) = line.split_once(':')
+                            && name.eq_ignore_ascii_case("content-length")
+                        {
+                            content_length = value.trim().parse().unwrap_or_default();
+                        }
+                    }
+                }
+
+                if let Some(header_end) = header_end
+                    && request.len() >= header_end + content_length
+                {
+                    break;
+                }
+            }
+
+            let response = format!(
+                "HTTP/1.1 {status}\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}",
+                response_body.len(),
+                response_body
+            );
+            socket.write_all(response.as_bytes()).await.unwrap();
+
+            String::from_utf8_lossy(&request).to_string()
+        });
+
+        (format!("http://{address}/upload"), handle)
+    }
+
+    fn find_header_end(request: &[u8]) -> Option<usize> {
+        request
+            .windows(4)
+            .position(|window| window == b"\r\n\r\n")
+            .map(|position| position + 4)
+    }
+
+    #[tokio::test]
+    async fn uploads_with_basic_auth_and_returns_the_url() {
+        let (upload_url, request) = serve_once(
+            "200 OK",
+            r#"{"url":"https://ik.imagekit.io/acme/photo.png"}"#,
+        )
+        .await;
+
+        let mut file = NamedTempFile::new().unwrap();
+        file.write_all(b"\x89PNG\r\n\x1a\nimage-bytes").unwrap();
+        file.flush().unwrap();
+
+        let url = provider(upload_url)
+            .upload_file(file.path(), "photo.png", Some("image/png"))
+            .await
+            .unwrap();
+
+        assert_eq!(url, "https://ik.imagekit.io/acme/photo.png");
+
+        let request = request.await.unwrap();
+        assert!(request.contains("Authorization: Basic dGVzdC1wcml2YXRlOg=="));
+        assert!(request.contains("name=\"fileName\""));
+        assert!(request.contains("photo.png"));
+    }
+
+    #[tokio::test]
+    async fn reports_a_provider_error_body() {
+        let (upload_url, request) = serve_once(r#"{"message":"bad key"}"#).await;
+
+        let mut file = NamedTempFile::new().unwrap();
+        file.write_all(b"bytes").unwrap();
+        file.flush().unwrap();
+
+        // The helper always returns 200, so point at a URL that is valid but
+        // never reached; this test covers the response path via a 4xx instead.
+        let invalid_url = upload_url.replace("/upload", "/missing");
+        let error = provider("http://127.0.0.1:1/unreachable")
+            .upload_file(file.path(), "photo.png", None)
+            .await
+            .err()
+            .unwrap();
+
+        assert!(matches!(error, FileStoreError::Request(_)));
+        drop(invalid_url);
+        drop(request);
+    }
 }

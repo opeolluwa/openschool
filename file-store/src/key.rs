@@ -83,7 +83,10 @@ mod tests {
 
     #[test]
     fn replaces_unsafe_characters() {
-        assert_eq!(sanitize_file_name("holiday photo (1).png"), "holiday-photo-1-.png");
+        assert_eq!(
+            sanitize_file_name("holiday photo (1).png"),
+            "holiday-photo-1-.png"
+        );
         assert_eq!(sanitize_file_name("résumé.pdf"), "r-sum-.pdf");
     }
 

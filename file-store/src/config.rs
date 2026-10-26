@@ -69,7 +69,9 @@ impl S3Config {
         }
 
         if self.access_key_id.expose_secret().trim().is_empty() {
-            return Err(FileStoreError::Config("S3 access key ID is required".into()));
+            return Err(FileStoreError::Config(
+                "S3 access key ID is required".into(),
+            ));
         }
 
         if self.secret_access_key.expose_secret().trim().is_empty() {

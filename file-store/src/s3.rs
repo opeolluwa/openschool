@@ -8,10 +8,7 @@ use aws_sdk_s3::{
 use secrecy::ExposeSecret;
 
 use crate::{
-    config::S3Config,
-    contract::FileStoreProvider,
-    error::FileStoreError,
-    key::build_object_key,
+    config::S3Config, contract::FileStoreProvider, error::FileStoreError, key::build_object_key,
 };
 
 /// AWS S3, or an S3-compatible service reached through a custom endpoint.
@@ -80,9 +77,7 @@ impl FileStoreProvider for S3Provider {
             .content_type(content_type.unwrap_or("application/octet-stream"))
             .send()
             .await
-            .map_err(|err| {
-                FileStoreError::Provider(format!("S3 rejected the upload: {err}"))
-            })?;
+            .map_err(|err| FileStoreError::Provider(format!("S3 rejected the upload: {err}")))?;
 
         self.public_url(&key)
     }
