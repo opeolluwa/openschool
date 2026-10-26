@@ -6,7 +6,7 @@ default-run = "openschool"
 
 [workspace]
 resolver = "3"
-members = ["event-bus", "macros", "mailman"]
+members = ["event-bus", "kernel", "macros", "mailman", "remittance"]
 
 [lib]
 name = "lib_openschool"
@@ -44,6 +44,7 @@ jsonwebtoken = { version = "10.1.0", features = ["rust_crypto"] }
 lettre = { version = "0.11.22", default-features = false, features = ["smtp-transport", "pool", "builder", "hostname", "tokio1-rustls", "ring", "rustls", "rustls-native-certs"] }
 log = "0.4.27"
 openschool_macros = { version = "0.1.0", path = "macros" }
+openschool_mailman = { path = "mailman" }
 openschool_migration = { version = "0.1.0", path = "migration" }
 rand = "0.10.3"
 redis = { version = "1.4.1", features = ["tokio-comp", "aio", "connection-manager", "tokio-rustls-comp"] }

@@ -3823,6 +3823,7 @@ dependencies = [
  "log",
  "mockall",
  "openschool_macros",
+ "openschool_mailman",
  "openschool_migration",
  "rand 0.10.3",
  "redis 1.8.0",
@@ -3868,6 +3869,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "openschool_kernel"
+version = "0.1.0"
+
+[[package]]
 name = "openschool_macros"
 version = "0.1.0"
 dependencies = [
@@ -3880,6 +3885,22 @@ dependencies = [
 [[package]]
 name = "openschool_mailman"
 version = "0.1.0"
+dependencies = [
+ "ammonia",
+ "askama",
+ "base64 0.22.1",
+ "lettre",
+ "mockall",
+ "openschool_event_bus",
+ "reqwest",
+ "secrecy",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "tracing-subscriber",
+]
 
 [[package]]
 name = "openschool_migration"
@@ -3888,6 +3909,10 @@ dependencies = [
  "sea-orm-migration",
  "tokio",
 ]
+
+[[package]]
+name = "openschool_remitance"
+version = "0.1.0"
 
 [[package]]
 name = "openssl-probe"

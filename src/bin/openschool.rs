@@ -15,6 +15,7 @@ use lib_openschool::config::{
 };
 use lib_openschool::errors::app_error::AppError;
 use lib_openschool::middlewares::csrf::CsrfLayer;
+use lib_openschool::services::mailer::mailman_config;
 
 use tower_http::{
     compression::CompressionLayer, limit::RequestBodyLimitLayer,
@@ -63,6 +64,14 @@ async fn main() -> Result<(), AppError> {
 
     let db_conn = init_db_pool(&app_config).await?;
     // let app_state = AppState::new(&db_conn).await?;
+
+    let mailman_settings = mailman_config(&app_config)?;
+    let mailman_health = mailman_settings.clone();
+    let mailman = openschool_mailman::start(mailman_settings)
+        .await
+        .map_err(|err| AppError::StartupError(format!("mailman failed to start: {err}")))?;
+    tracing::info!(driver = %mailman.driver(), "mailman started");
+    tokio::spawn(openschool_mailman::check_health(mailman_health));
 
     let app = Router::new()
         // .merge(http_routes)
