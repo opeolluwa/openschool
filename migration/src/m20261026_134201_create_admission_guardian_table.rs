@@ -33,6 +33,7 @@ impl MigrationTrait for Migration {
                     .table(ADMISSION_APPLICANT_GUARDIAN_TABLE)
                     .if_not_exists()
                     .col(ColumnDef::new("identifier").binary_len(16).primary_key())
+                    .col(ColumnDef::new("applicant_identifier").binary_len(16).not_null())
                     .col(string("first_name"))
                     .col(string("last_name"))
                     .col(string_null("middle_name"))

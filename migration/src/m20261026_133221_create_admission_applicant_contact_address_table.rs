@@ -17,6 +17,7 @@ impl MigrationTrait for Migration {
             .create_table(
                 Table::create()
                     .table(ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE)
+                    .col(ColumnDef::new("identifier").binary_len(16).primary_key())
                     .col(string("address_line_one"))
                     .col(string_null("address_line_two"))
                     .col(string("city"))

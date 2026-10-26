@@ -8,4 +8,5 @@ pub mod middlewares;
 pub mod repository;
 pub mod services;
 pub mod states;
+pub mod models;
 pub mod utils;

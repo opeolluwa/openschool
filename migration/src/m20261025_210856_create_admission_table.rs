@@ -40,6 +40,12 @@ impl MigrationTrait for Migration {
                     .col(date("date_of_birth"))
                     .col(date("email").unique_key())
                     .col(date("phone").unique_key())
+                    .col(
+                        ColumnDef::new("address_identifier")
+                            .binary_len(16)
+                            .not_null()
+                            .unique_key(),
+                    )
                     .col(string("photograph"))
                     .col(string_null("nationality"))
                     .col(date_time_default_now("created_at"))
