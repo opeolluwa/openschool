@@ -1,9 +1,10 @@
 use std::{str::FromStr, time::Duration};
 
+use openschool_kernel::env::extract_env;
 use secrecy::SecretString;
 use serde::{Deserialize, Serialize};
 
-use crate::{errors::app_error::AppError, utils::extract_env::extract_env};
+use crate::{errors::app_error::AppError};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct AppConfig {
@@ -428,7 +429,7 @@ fn default_mailtrap_base_url() -> String {
 }
 
 fn extract_optional_env<T: FromStr>(env_key: &str) -> Option<T> {
-    std::env::var(env_key).ok().and_then(|raw| raw.parse().ok())
+    openschool_kernel::env::extract_optional_env(env_key)
 }
 
 fn default_port() -> u16 {

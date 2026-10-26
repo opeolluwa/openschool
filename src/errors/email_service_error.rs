@@ -34,3 +34,20 @@ impl IntoResponse for EmailServiceError {
             .into_response()
     }
 }
+
+impl From<openschool_mailman::EmailServiceError> for EmailServiceError {
+    fn from(error: openschool_mailman::EmailServiceError) -> Self {
+        match error {
+            openschool_mailman::EmailServiceError::SendEmailError => Self::SendEmailError,
+            openschool_mailman::EmailServiceError::OperationFailed(message) => {
+                Self::OperationFailed(message)
+            }
+            openschool_mailman::EmailServiceError::ProviderError(message) => {
+                Self::ProviderError(message)
+            }
+            openschool_mailman::EmailServiceError::DeliveryError(message) => {
+                Self::DeliveryError(message)
+            }
+        }
+    }
+}

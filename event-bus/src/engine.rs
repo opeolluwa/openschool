@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, time::Duration};
 
 use serde::Serialize;
 
@@ -14,17 +14,22 @@ use crate::{
 #[derive(Clone)]
 pub struct QueueEngine {
     inner: Arc<dyn QueueBackend>,
+    send_deadline: Duration,
 }
 
 impl QueueEngine {
     /// Builds the backend named by [`QueueConfig::driver`].
     pub async fn connect(config: QueueConfig) -> Result<Self, QueueError> {
+        let send_deadline = config.send_deadline;
         let inner: Arc<dyn QueueBackend> = match config.driver {
             QueueDriver::Redis => Arc::new(RedisBackend::connect(config).await?),
             QueueDriver::Kafka => Arc::new(KafkaBackend::connect(config).await?),
         };
 
-        Ok(Self { inner })
+        Ok(Self {
+            inner,
+            send_deadline,
+        })
     }
 
     /// Serializes `payload` and hands it to the driver under `event`.
@@ -44,7 +49,19 @@ impl QueueEngine {
         F: Fn(JobContext, serde_json::Value) -> Fut + Send + Sync + 'static,
         Fut: std::future::Future<Output = Result<(), HandlerError>> + Send + 'static,
     {
-        let handler = box_handler(handler);
+        let deadline = self.send_deadline;
+        let handler = box_handler(move |context, payload| {
+            let future = handler(context, payload);
+
+            async move {
+                match tokio::time::timeout(deadline, future).await {
+                    Ok(result) => result,
+                    Err(_) => Err(HandlerError::Retry(format!(
+                        "handler exceeded its {deadline:?} budget"
+                    ))),
+                }
+            }
+        });
 
         self.inner.run(events.to_vec(), handler).await
     }
@@ -52,5 +69,10 @@ impl QueueEngine {
     /// The active driver, for logging and metrics.
     pub fn driver(&self) -> QueueDriver {
         self.inner.driver()
+    }
+
+    /// The wall-clock ceiling applied to each handler invocation.
+    pub fn send_deadline(&self) -> Duration {
+        self.send_deadline
     }
 }
