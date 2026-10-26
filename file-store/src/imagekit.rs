@@ -220,7 +220,11 @@ mod tests {
         assert_eq!(url, "https://ik.imagekit.io/acme/photo.png");
 
         let request = request.await.unwrap();
-        assert!(request.contains("Authorization: Basic dGVzdC1wcml2YXRlOg=="));
+        let authorization = request
+            .lines()
+            .find(|line| line.to_ascii_lowercase().starts_with("authorization:"))
+            .unwrap();
+        assert!(authorization.ends_with("Basic dGVzdC1wcml2YXRlOg=="));
         assert!(request.contains("name=\"fileName\""));
         assert!(request.contains("photo.png"));
     }

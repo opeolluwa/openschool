@@ -4,11 +4,11 @@ use super::sea_orm_active_enums::Gender;
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
+#[openschool_macros::stringify_ulid_identifiers]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "admission_applicant")]
 #[serde(rename_all = "camelCase")]
 #[openschool_macros::ts_rs_export_sea_orm_entity_name]
-#[openschool_macros::stringify_ulid_identifiers]
 pub struct Model {
     #[sea_orm(
         primary_key,

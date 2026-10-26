@@ -79,11 +79,6 @@ pub(crate) fn expand(input: DeriveInput) -> syn::Result<TokenStream> {
         }
     }
 
-    strip_serde_derives(&mut input);
-    input.attrs.insert(
-        0,
-        syn::parse_quote!(#[derive(::serde::Serialize, ::serde::Deserialize)]),
-    );
 
     let helper_module = ulid_helper_module(&helper);
 
@@ -337,34 +332,6 @@ fn is_u8(ty: &Type) -> bool {
         .unwrap_or(false)
 }
 
-fn strip_serde_derives(input: &mut DeriveInput) {
-    input.attrs = input
-        .attrs
-        .drain(..)
-        .filter_map(|attr| {
-            if !attr.path().is_ident("derive") {
-                return Some(attr);
-            }
-
-            let Ok(paths) = attr.parse_args_with(
-                syn::punctuated::Punctuated::<syn::Path, syn::Token![,]>::parse_terminated,
-            ) else {
-                return Some(attr);
-            };
-
-            let filtered: Vec<_> = paths
-                .into_iter()
-                .filter(|path| !path.is_ident("Serialize") && !path.is_ident("Deserialize"))
-                .collect();
-
-            if filtered.is_empty() {
-                None
-            } else {
-                Some(syn::parse_quote!(#[derive(#(#filtered),*)]))
-            }
-        })
-        .collect();
-}
 
 #[cfg(test)]
 mod tests {
@@ -454,7 +421,7 @@ mod tests {
     }
 
     #[test]
-    fn generates_a_helper_module_and_the_serde_derive() {
+    fn generates_a_helper_module_and_serde_field_attributes() {
         let input: DeriveInput = syn::parse2(quote! {
             #[sea_orm(table_name = "admission_applicant")]
             struct Model {
@@ -471,7 +438,6 @@ mod tests {
             .to_string();
 
         assert!(expanded.contains("__ulid_serde_for_Model"));
-        assert!(expanded.contains("derive"));
         assert!(expanded.contains("serialize_with"));
         assert!(expanded.contains("rename = \"createdAt\""));
         assert!(expanded.contains("Ulid"));
