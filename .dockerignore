@@ -1,14 +1,30 @@
+# Build artifacts
 target/
 **/target/
+
+# Environment
 .env
 .env.*
-tmp/
+
+# Dependencies and generated output
 **/node_modules/
-**/.DS_Store
-**/.git/
+**/.nuxt/
+**/.output/
+**/.data/
+**/.nitro/
+**/.cache/
+tmp/
 bindings/
-console/
 generator/
 mocks/
 docs/
+
+# Frontend apps (not needed by the Rust image)
+web/
+console/
+
+# VCS and OS files
+.git/
+**/.DS_Store
+
 pgadmin-servers.json

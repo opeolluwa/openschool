@@ -121,7 +121,7 @@ function generateIndex(entitiesDir, special) {
  * in one directory while index.ts is written to another.
  */
 function bindingsDir(entitiesDir) {
-  return path.resolve(entitiesDir, "../../backoffice-console/app/typegen");
+  return path.resolve(entitiesDir, "./typegen/src");
 }
 
 function updateBindings(entitiesDir, cargoDir) {

@@ -13,7 +13,7 @@ set dotenv-path := "./.env"
 set export
 
 DOCKER_CMD := "docker compose -f docker-compose.yaml"
-DEV_DB_URL := "postgres://backoffice:backoffice@localhost:6543/backoffice"
+DEV_DB_URL := "postgres://openschool:openschool@localhost:6543/openschool"
 REDIS_CONNECTION_URL := "redis://localhost:7379"
 
 @default:
@@ -66,7 +66,7 @@ migrate-add target:
         --enum-extra-attributes 'serde(rename_all = "snake_case")' \
         --model-extra-attributes 'serde(rename_all="camelCase")' \
         --model-extra-attributes 'macros::ts_rs_export_sea_orm_entity_name' \
-        --ignore-tables backoffice_server_migrations \
+        --ignore-tables openschool_server_migrations \
         -o src/models
 
 #Pull DB schema, regenerate entities, and export bindings
@@ -77,7 +77,7 @@ db-pull:
 
 #Create a new admin user via CLI
 run-cli:
-    DATABASE_URL={{ DEV_DB_URL }} REDIS_CONNECTION_URL={{ REDIS_CONNECTION_URL }} cargo run --bin backoffice-cli create-user
+    DATABASE_URL={{ DEV_DB_URL }} REDIS_CONNECTION_URL={{ REDIS_CONNECTION_URL }} cargo run --bin openschool-cli create-user
 
 #Lint frontend and format backend code
 lint:
@@ -113,11 +113,11 @@ release bump="patch":
     bash scripts/release.sh {{ bump }}
 
 build-prod:
-    docker build -f docker/prod/Dockerfile -t backoffice:prod .
-    docker images backoffice:prod
+    docker build -f docker/prod/Dockerfile -t openschool:prod .
+    docker images openschool:prod
 
 run-prod:
-    docker run --rm --env-file .env.prod -p 8000:8000 backoffice:prod
+    docker run --rm --env-file .env.prod -p 8000:8000 openschool:prod
 
 #Seed analytics dashboard data (dev only)
 @seed-analytics:
