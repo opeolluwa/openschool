@@ -1,14 +1,25 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+mod ts_rs_decimal_fields;
+mod ts_rs_export_sea_orm_entity_name;
+mod utils;
+
+use proc_macro::TokenStream;
+
+#[proc_macro_attribute]
+pub fn ts_rs_export_sea_orm_entity_name(args: TokenStream, input: TokenStream) -> TokenStream {
+    let derive_input = syn::parse_macro_input!(input as syn::DeriveInput);
+
+    match ts_rs_export_sea_orm_entity_name::expand(derive_input, args) {
+        Ok(ts) => ts.into(),
+        Err(err) => err.to_compile_error().into(),
+    }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[proc_macro_attribute]
+pub fn ts_rs_decimal_fields(_args: TokenStream, input: TokenStream) -> TokenStream {
+    let derive_input = syn::parse_macro_input!(input as syn::DeriveInput);
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    match ts_rs_decimal_fields::expand(derive_input) {
+        Ok(ts) => ts.into(),
+        Err(err) => err.to_compile_error().into(),
     }
 }
