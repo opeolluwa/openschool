@@ -26,8 +26,6 @@ use tower_http::{
 async fn main() -> Result<(), AppError> {
     let app_config = load_config()?;
 
-
-
     // A zero-valued env var would otherwise panic in NonZeroU32::new; fall back
     // to the hardened defaults instead of failing to start.
     let requests_per_second =
@@ -62,7 +60,7 @@ async fn main() -> Result<(), AppError> {
 
     init_tracing(&app_config);
 
-    let db_conn = init_db_pool(&app_config).await?;
+    let _db_conn = init_db_pool(&app_config).await?;
     // let app_state = AppState::new(&db_conn).await?;
 
     let mailman_settings = mailman_config(&app_config)?;
@@ -144,10 +142,6 @@ async fn main() -> Result<(), AppError> {
 
     tracing::info!("Service health check at http://{}/health", ip_address,);
     let listener = tokio::net::TcpListener::bind(ip_address).await?;
-
-
-
-
 
     axum::serve(
         listener,

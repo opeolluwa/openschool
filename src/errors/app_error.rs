@@ -15,6 +15,8 @@ pub enum AppError {
     AppFileSystemError(#[from] std::io::Error),
     #[error("Internal server error")]
     InternalServerError,
+    #[error(transparent)]
+    KernelError(#[from] openschool_kernel::env::EnvError),
 }
 
 impl AppError {

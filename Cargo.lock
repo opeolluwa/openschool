@@ -3822,6 +3822,7 @@ dependencies = [
  "lettre",
  "log",
  "mockall",
+ "openschool_kernel",
  "openschool_macros",
  "openschool_mailman",
  "openschool_migration",
@@ -3871,6 +3872,13 @@ dependencies = [
 [[package]]
 name = "openschool_kernel"
 version = "0.1.0"
+dependencies = [
+ "rust_decimal",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tracing",
+]
 
 [[package]]
 name = "openschool_macros"
