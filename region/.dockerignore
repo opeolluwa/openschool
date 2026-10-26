@@ -1,0 +1,6 @@
+tmp
+docker
+README.md
+Justfile
+.env
+.env.example

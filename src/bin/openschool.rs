@@ -1,8 +1,8 @@
 use std::net::{Ipv4Addr, SocketAddrV4};
 use std::num::NonZeroU32;
+use std::sync::Arc;
 
 use axum::{
-    Router,
     extract::DefaultBodyLimit,
     http::{HeaderName, HeaderValue, Method, StatusCode},
 };
@@ -15,7 +15,9 @@ use lib_openschool::config::{
 };
 use lib_openschool::errors::app_error::AppError;
 use lib_openschool::middlewares::csrf::CsrfLayer;
+use lib_openschool::router::load_routes;
 use lib_openschool::services::{file_store::file_store_engine, mailer::mailman_config};
+use lib_openschool::states::AppState;
 
 use tower_http::{
     compression::CompressionLayer, limit::RequestBodyLimitLayer,
@@ -60,8 +62,8 @@ async fn main() -> Result<(), AppError> {
 
     init_tracing(&app_config);
 
-    let _db_conn = init_db_pool(&app_config).await?;
-    // let app_state = AppState::new(&db_conn).await?;
+    let db_conn = init_db_pool(&app_config).await?;
+    let app_state = Arc::new(AppState::new(&db_conn, &app_config));
 
     let mailman_settings = mailman_config(&app_config)?;
     let mailman_health = mailman_settings.clone();
@@ -75,8 +77,7 @@ async fn main() -> Result<(), AppError> {
         .map_err(|err| AppError::StartupError(format!("file store failed to start: {err}")))?;
     tracing::info!(backend = %file_store.backend(), "file store configured");
 
-    let app = Router::new()
-        // .merge(http_routes)
+    let app = load_routes(&app_state)
         .layer(DefaultBodyLimit::disable())
         .layer(RequestBodyLimitLayer::new(
             app_config.body_limit_megabytes * 1024 * 1024,

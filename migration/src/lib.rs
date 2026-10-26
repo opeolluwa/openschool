@@ -5,6 +5,8 @@ mod m20261026_133221_create_admission_applicant_contact_address_table;
 mod m20261026_134201_create_admission_guardian_table;
 mod m20261026_134221_create_admission_guardian_contact_address_table;
 mod m20261026_144622_create_admission_foreign_keys;
+mod m20261026_180522_create_admission_table;
+mod m20261026_181256_create_institution_table;
 
 pub struct Migrator;
 
@@ -17,6 +19,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261026_134201_create_admission_guardian_table::Migration),
             Box::new(m20261026_134221_create_admission_guardian_contact_address_table::Migration),
             Box::new(m20261026_144622_create_admission_foreign_keys::Migration),
+            Box::new(m20261026_180522_create_admission_table::Migration),
+            Box::new(m20261026_181256_create_institution_table::Migration),
         ]
     }
 }

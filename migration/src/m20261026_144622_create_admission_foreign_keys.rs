@@ -1,7 +1,7 @@
 use sea_orm_migration::prelude::*;
 
 use super::m20261025_210856_create_admission_table::ADMISSION_APPLICANT_DATA_TABLE;
-use super::m20261026_133221_create_admission_applicant_contact_address_table::ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE;
+use super::m20261026_133221_create_admission_applicant_contact_address_table::CONTACT_ADDRESS_TABLE;
 use super::m20261026_134201_create_admission_guardian_table::ADMISSION_APPLICANT_GUARDIAN_TABLE;
 use super::m20261026_134221_create_admission_guardian_contact_address_table::ADMISSION_GUARDIAN_CONTACT_ADDRESS_TABLE;
 
@@ -21,7 +21,7 @@ impl MigrationTrait for Migration {
                 ForeignKey::create()
                     .name("fk-admission_applicant_contact_address-applicant_id")
                     .from(ADMISSION_APPLICANT_DATA_TABLE, "address_identifier")
-                    .to(ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE, "identifier")
+                    .to(CONTACT_ADDRESS_TABLE, "identifier")
                     .on_delete(ForeignKeyAction::Cascade)
                     .on_update(ForeignKeyAction::Cascade)
                     .to_owned(),
@@ -79,7 +79,7 @@ impl MigrationTrait for Migration {
             .drop_foreign_key(
                 ForeignKey::drop()
                     .name("fk-admission_applicant_contact_address-applicant_id")
-                    .table(ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE)
+                    .table(CONTACT_ADDRESS_TABLE)
                     .to_owned(),
             )
             .await

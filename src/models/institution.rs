@@ -4,36 +4,35 @@ use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
-#[sea_orm(table_name = "admission_applicant_contact_address")]
+#[sea_orm(table_name = "institution")]
 #[serde(rename_all = "camelCase")]
 #[openschool_macros::ts_rs_export_sea_orm_entity_name]
 #[openschool_macros::stringify_ulid_identifiers]
 pub struct Model {
-    #[sea_orm(
-        primary_key,
-        auto_increment = false,
-        column_type = "VarBinary(StringLen::None)"
-    )]
-    pub identifier: Vec<u8>,
-    pub address_line_one: String,
-    pub address_line_two: Option<String>,
-    pub city: String,
-    pub region: Option<String>,
-    pub country: String,
-    pub zip_code: String,
+    pub name: String,
+    pub tagline: String,
+    pub logo_url: String,
+    #[sea_orm(column_type = "VarBinary(StringLen::None)", unique)]
+    pub address_identifier: Vec<u8>,
     pub created_at: DateTime,
     pub updated_at: Option<DateTime>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_one = "super::admission_applicant::Entity")]
-    AdmissionApplicant,
+    #[sea_orm(
+        belongs_to = "super::contact_address::Entity",
+        from = "Column::AddressIdentifier",
+        to = "super::contact_address::Column::Identifier",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    ContactAddress,
 }
 
-impl Related<super::admission_applicant::Entity> for Entity {
+impl Related<super::contact_address::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AdmissionApplicant.def()
+        Relation::ContactAddress.def()
     }
 }
 
