@@ -79,12 +79,11 @@ pub(crate) fn expand(input: DeriveInput) -> syn::Result<TokenStream> {
         }
     }
 
-    if !has_serde_derive(&input) {
-        input.attrs.insert(
-            0,
-            syn::parse_quote!(#[derive(::serde::Serialize, ::serde::Deserialize)]),
-        );
-    }
+    strip_serde_derives(&mut input);
+    input.attrs.insert(
+        0,
+        syn::parse_quote!(#[derive(::serde::Serialize, ::serde::Deserialize)]),
+    );
 
     let helper_module = ulid_helper_module(&helper);
 
@@ -338,22 +337,33 @@ fn is_u8(ty: &Type) -> bool {
         .unwrap_or(false)
 }
 
-fn has_serde_derive(input: &DeriveInput) -> bool {
-    input.attrs.iter().any(|attr| {
-        if !attr.path().is_ident("derive") {
-            return false;
-        }
+fn strip_serde_derives(input: &mut DeriveInput) {
+    input.attrs = input
+        .attrs
+        .drain(..)
+        .filter_map(|attr| {
+            if !attr.path().is_ident("derive") {
+                return Some(attr);
+            }
 
-        attr.parse_args_with(
-            syn::punctuated::Punctuated::<syn::Path, syn::Token![,]>::parse_terminated,
-        )
-        .map(|paths| {
-            paths
-                .iter()
-                .any(|path| path.is_ident("Serialize") || path.is_ident("Deserialize"))
+            let Ok(paths) = attr.parse_args_with(
+                syn::punctuated::Punctuated::<syn::Path, syn::Token![,]>::parse_terminated,
+            ) else {
+                return Some(attr);
+            };
+
+            let filtered: Vec<_> = paths
+                .into_iter()
+                .filter(|path| !path.is_ident("Serialize") && !path.is_ident("Deserialize"))
+                .collect();
+
+            if filtered.is_empty() {
+                None
+            } else {
+                Some(syn::parse_quote!(#[derive(#(#filtered),*)]))
+            }
         })
-        .unwrap_or(false)
-    })
+        .collect();
 }
 
 #[cfg(test)]

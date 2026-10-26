@@ -227,23 +227,20 @@ mod tests {
 
     #[tokio::test]
     async fn reports_a_provider_error_body() {
-        let (upload_url, request) = serve_once(r#"{"message":"bad key"}"#).await;
+        let (upload_url, request) =
+            serve_once("401 Unauthorized", r#"{"message":"bad key"}"#).await;
 
         let mut file = NamedTempFile::new().unwrap();
         file.write_all(b"bytes").unwrap();
         file.flush().unwrap();
 
-        // The helper always returns 200, so point at a URL that is valid but
-        // never reached; this test covers the response path via a 4xx instead.
-        let invalid_url = upload_url.replace("/upload", "/missing");
-        let error = provider("http://127.0.0.1:1/unreachable")
+        let error = provider(upload_url)
             .upload_file(file.path(), "photo.png", None)
             .await
-            .err()
-            .unwrap();
+            .unwrap_err();
 
-        assert!(matches!(error, FileStoreError::Request(_)));
-        drop(invalid_url);
-        drop(request);
+        request.await.unwrap();
+        assert!(matches!(error, FileStoreError::Provider(_)));
+        assert!(error.to_string().contains("bad key"));
     }
 }
