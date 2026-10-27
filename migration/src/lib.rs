@@ -7,6 +7,8 @@ mod m20261026_181256_create_institution_table;
 mod m20261027_145128_create_grading_system_table;
 mod m20261027_145153_create_academic_calendar_table;
 mod m20261027_145523_extend_institution_table;
+mod m20261027_162317_create_otp_table;
+mod m20261027_163136_add_failed_attempts_to_otp;
 
 pub use sea_orm_migration::prelude::*;
 
@@ -25,6 +27,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261027_145128_create_grading_system_table::Migration),
             Box::new(m20261027_145153_create_academic_calendar_table::Migration),
             Box::new(m20261027_145523_extend_institution_table::Migration),
+            Box::new(m20261027_162317_create_otp_table::Migration),
+            Box::new(m20261027_163136_add_failed_attempts_to_otp::Migration),
         ]
     }
 }
