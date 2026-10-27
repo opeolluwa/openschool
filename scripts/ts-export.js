@@ -3,17 +3,14 @@
 1. Rewrites bare #[ts(export)] in SeaORM-generated entity files to
    #[ts(export, export_to = "<stem>.ts")] so ts-rs emits per-file bindings.
 2. Runs cargo build to trigger ts-rs codegen, producing one .ts binding per
-   entity file in the frontend's bindings directory.
+   entity file in the bindings directory.
 3. Generates index.ts re-exporting all binding types.
-
-TS_RS_BINDINGS_DIR is set by build.rs.
 
 Usage (from repo root):
     node scripts/ts-export.js [entities_dir]
 
 entities_dir defaults to src/models.
-Bindings are written to ../backoffice-console/app/typegen/, matching
-TS_RS_EXPORT_DIR in .cargo/config.toml.
+Bindings are written to ./typegen/src, index to ./typegen/index.ts, matching TS_RS_EXPORT_DIR in .cargo/config.toml.
 */
 
 import fs from "node:fs";
@@ -29,7 +26,7 @@ const ENUM_RE = /^pub enum (\w+)/gm;
 const SKIP = new Set(["mod", "prelude"]);
 
 const ENUM_SOURCES = {
-  sea_orm_active_enums: path.join("src", "enums.rs"),
+  sea_orm_active_enums: path.join("src", "models", "sea_orm_active_enums.rs"),
 };
 
 /** Return sorted enum names found in a Rust source file. */
@@ -90,7 +87,7 @@ function generateIndex(entitiesDir, special) {
     const stem = path.basename(file, ".rs");
     if (SKIP.has(stem)) continue;
 
-    const bindingPath = `./${stem}`;
+    const bindingPath = `./src/${stem}`;
 
     if (special[stem]) {
       const names = special[stem].join(", ");
@@ -102,13 +99,11 @@ function generateIndex(entitiesDir, special) {
     }
   }
 
-  // specialExports.push('export type { JsonValue } from "./serde_json/JsonValue";\n');
-
   const lines = [header, ...specialExports, "\n", ...imports, "\n", ...interfaces];
 
-  const frontendBindingsDir = bindingsDir(entitiesDir);
-  fs.mkdirSync(frontendBindingsDir, { recursive: true });
-  const indexPath = path.join(frontendBindingsDir, "index.ts");
+  const indexOut = indexOutDir(entitiesDir);
+  fs.mkdirSync(indexOut, { recursive: true });
+  const indexPath = path.join(indexOut, "index.ts");
   fs.writeFileSync(indexPath, lines.join(""), "utf8");
   console.log(
     `  wrote: ${indexPath} (${imports.length} interfaces, ${specialExports.length} type exports)`
@@ -116,16 +111,27 @@ function generateIndex(entitiesDir, special) {
 }
 
 /**
- * Must agree with TS_RS_EXPORT_DIR in .cargo/config.toml, which is what
- * ts-rs itself writes the per-file bindings to. If these drift, codegen lands
- * in one directory while index.ts is written to another.
+ * ts-rs writes bindings to TS_RS_EXPORT_DIR in .cargo/config.toml
  */
+function tsRsOutDir(entitiesDir) {
+  const projectRoot = path.resolve(entitiesDir, "..", "..");
+  return path.resolve(projectRoot, "typegen", "src");
+}
+
+/**
+ * Index re-exports are written to typegen/index.ts
+ */
+function indexOutDir(entitiesDir) {
+  const projectRoot = path.resolve(entitiesDir, "..", "..");
+  return path.resolve(projectRoot, "typegen");
+}
+
 function bindingsDir(entitiesDir) {
-  return path.resolve(entitiesDir, "./typegen/src");
+  return indexOutDir(entitiesDir);
 }
 
 function updateBindings(entitiesDir, cargoDir) {
-  const outDir = bindingsDir(entitiesDir);
+  const outDir = tsRsOutDir(entitiesDir);
 
   const expectedFiles = fs
     .readdirSync(entitiesDir)
@@ -152,10 +158,14 @@ function updateBindings(entitiesDir, cargoDir) {
     fs.utimesSync(f, now, now);
   }
 
-  execSync("cargo build -p backoffice", {
-    cwd: cargoDir,
-    stdio: "inherit",
-  });
+  try {
+    execSync("cargo build", {
+      cwd: cargoDir,
+      stdio: "inherit",
+    });
+  } catch (e) {
+    throw e;
+  }
 }
 
 function main() {
@@ -171,10 +181,6 @@ function main() {
   const projectRoot = path.resolve(entitiesDir, "..", "..");
   const special = buildSpecial(projectRoot);
 
-  // for (const [stem, names] of Object.entries(special)) {
-  //   console.log(`  enums from ${ENUM_SOURCES[stem]}: ${names.join(", ")}`);
-  // }
-
   const changed = fs
     .readdirSync(entitiesDir)
     .filter((f) => f.endsWith(".rs"))
@@ -189,7 +195,7 @@ function main() {
     console.log("  nothing to patch (no bare #[ts(export)] found)");
   }
 
-  const cargoDir = path.resolve(__dirname, "..");
+  const cargoDir = projectRoot;
   updateBindings(entitiesDir, cargoDir);
 
   generateIndex(entitiesDir, special);

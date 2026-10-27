@@ -9,6 +9,12 @@ use serde::{Deserialize, Serialize};
 #[openschool_macros::ts_rs_export_sea_orm_entity_name]
 #[openschool_macros::stringify_ulid_identifiers]
 pub struct Model {
+    #[sea_orm(
+        primary_key,
+        auto_increment = false,
+        column_type = "VarBinary(StringLen::None)"
+    )]
+    pub identifier: Vec<u8>,
     pub name: String,
     pub tagline: String,
     pub logo_url: String,

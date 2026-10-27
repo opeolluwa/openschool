@@ -189,20 +189,6 @@ services:
     networks:
       - internal
 
-volumes:
-  cargo-target:
-  rust-cache:
-  postgres-data:
-  pgadmin-data:
-  redis-data:
-  redisinsight-data:
-  url-minifier-go-cache:
-
-networks:
-  internal:
-    name: internal
-    driver: bridge
-
   # URL Minifier Plugin
   url-minifier:
     container_name: url-minifier
@@ -232,3 +218,17 @@ networks:
       timeout: 5s
       retries: 10
       start_period: 20s
+
+volumes:
+  cargo-target:
+  rust-cache:
+  postgres-data:
+  pgadmin-data:
+  redis-data:
+  redisinsight-data:
+  url-minifier-go-cache:
+
+networks:
+  internal:
+    name: internal
+    driver: bridge
