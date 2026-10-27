@@ -196,8 +196,39 @@ volumes:
   pgadmin-data:
   redis-data:
   redisinsight-data:
+  url-minifier-go-cache:
 
 networks:
   internal:
     name: internal
     driver: bridge
+
+  # URL Minifier Plugin
+  url-minifier:
+    container_name: url-minifier
+    build:
+      context: ./plugins/url-minifier
+      dockerfile: docker/dev/Dockerfile
+    ports:
+      - "${URL_MINIFIER_PORT:-5011}:5011"
+    env_file:
+      - ./plugins/url-minifier/.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - internal
+    volumes:
+      - ./plugins/url-minifier:/app:cached
+      - url-minifier-go-cache:/root/go/pkg/mod
+    stdin_open: true
+    tty: true
+    profiles: ["plugins", "url-minifier"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${URL_MINIFIER_PORT:-5011}/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s

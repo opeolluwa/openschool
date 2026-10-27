@@ -1,0 +1,13 @@
+.git
+.gitignore
+*.md
+air.toml
+tmp/
+*.log
+.env
+.env.example
+docker-compose.yaml
+pgadmin-servers.json
+postman/
+__pycache__/
+.DS_Store
