@@ -3,7 +3,7 @@ package states
 import (
 	"log"
 
-	"github.com/opeolluwa/saturn/config"
+	"github.com/opeolluwa/openschool/plugins/region/config"
 	"gorm.io/gorm"
 )
 

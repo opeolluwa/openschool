@@ -13,10 +13,11 @@ import (
 	"github.com/Netflix/go-env"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/opeolluwa/saturn/config"
-	appMiddleware "github.com/opeolluwa/saturn/middlewares"
-	"github.com/opeolluwa/saturn/routers"
-	"github.com/opeolluwa/saturn/states"
+	"github.com/opeolluwa/openschool/plugins/region/config"
+	appMiddleware "github.com/opeolluwa/openschool/plugins/region/middlewares"
+	"github.com/opeolluwa/openschool/plugins/region/routers"
+	"github.com/opeolluwa/openschool/plugins/region/seeders"
+	"github.com/opeolluwa/openschool/plugins/region/states"
 	"github.com/swaggo/echo-swagger"
 )
 
@@ -32,6 +33,10 @@ func main() {
 	state, err := states.Init(environment)
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+	if err := seeders.SeedCountries(state.Database); err != nil {
+		log.Println("Warning: failed to seed countries:", err)
 	}
 
 	app := echo.New()

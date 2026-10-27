@@ -3,7 +3,7 @@ package config
 import (
 	"fmt"
 
-	"github.com/opeolluwa/saturn/models"
+	"github.com/opeolluwa/openschool/plugins/region/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -14,7 +14,7 @@ func ConnectDatabase(config Environment) (*gorm.DB, error) {
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	db.AutoMigrate(&models.User{})
-	
+	db.AutoMigrate(&models.Country{})
+
 	return db, err
 }
