@@ -5,7 +5,6 @@ pub mod prelude;
 pub mod admission;
 pub mod admission_applicant;
 pub mod admission_applicant_guardian_data;
-pub mod admission_guardian_contact_address;
 pub mod contact_address;
 pub mod institution;
 pub mod sea_orm_active_enums;

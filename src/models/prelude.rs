@@ -3,7 +3,6 @@
 pub use super::admission::Entity as Admission;
 pub use super::admission_applicant::Entity as AdmissionApplicant;
 pub use super::admission_applicant_guardian_data::Entity as AdmissionApplicantGuardianData;
-pub use super::admission_guardian_contact_address::Entity as AdmissionGuardianContactAddress;
 pub use super::contact_address::Entity as ContactAddress;
 pub use super::institution::Entity as Institution;
 pub use super::seaql_migrations::Entity as SeaqlMigrations;

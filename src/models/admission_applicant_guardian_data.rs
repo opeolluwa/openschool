@@ -29,6 +29,8 @@ pub struct Model {
     pub occupation: Option<String>,
     pub photograph: String,
     pub nationality: Option<String>,
+    #[sea_orm(column_type = "VarBinary(StringLen::None)", unique)]
+    pub address_identifier: Vec<u8>,
     pub created_at: DateTime,
     pub updated_at: Option<DateTime>,
 }
@@ -43,8 +45,14 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     AdmissionApplicant,
-    #[sea_orm(has_one = "super::admission_guardian_contact_address::Entity")]
-    AdmissionGuardianContactAddress,
+    #[sea_orm(
+        belongs_to = "super::contact_address::Entity",
+        from = "Column::AddressIdentifier",
+        to = "super::contact_address::Column::Identifier",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    ContactAddress,
 }
 
 impl Related<super::admission_applicant::Entity> for Entity {
@@ -53,9 +61,9 @@ impl Related<super::admission_applicant::Entity> for Entity {
     }
 }
 
-impl Related<super::admission_guardian_contact_address::Entity> for Entity {
+impl Related<super::contact_address::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::AdmissionGuardianContactAddress.def()
+        Relation::ContactAddress.def()
     }
 }
 

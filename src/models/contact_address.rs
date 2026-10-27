@@ -31,6 +31,8 @@ pub enum Relation {
     AdmissionApplicant,
     #[sea_orm(has_one = "super::institution::Entity")]
     Institution,
+    #[sea_orm(has_one = "super::admission_applicant_guardian_data::Entity")]
+    AdmissionApplicantGuardianData,
 }
 
 impl Related<super::admission_applicant::Entity> for Entity {
@@ -42,6 +44,12 @@ impl Related<super::admission_applicant::Entity> for Entity {
 impl Related<super::institution::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::Institution.def()
+    }
+}
+
+impl Related<super::admission_applicant_guardian_data::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::AdmissionApplicantGuardianData.def()
     }
 }
 

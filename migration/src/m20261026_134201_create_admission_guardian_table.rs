@@ -51,6 +51,12 @@ impl MigrationTrait for Migration {
                     .col(string_null("occupation"))
                     .col(string("photograph"))
                     .col(string_null("nationality"))
+                    .col(
+                        ColumnDef::new("address_identifier")
+                            .binary_len(16)
+                            .not_null()
+                            .unique_key(),
+                    )
                     .col(date_time_default_now("created_at"))
                     .col(date_time_null("updated_at"))
                     .to_owned(),
