@@ -1,5 +1,6 @@
 use sea_orm_migration::prelude::*;
 
+use crate::m20261026_180522_create_admission_table::ADMISSION_TABLE;
 use crate::m20261026_181256_create_institution_table::INSTITUTION_TABLE;
 use crate::m20261027_145128_create_grading_system_table::GRADING_SYSTEM_TABLE;
 use crate::m20261027_145153_create_academic_calendar_table::ACADEMIC_CALENDAR_TABLE;
@@ -53,10 +54,31 @@ impl MigrationTrait for Migration {
                     )
                     .to_owned(),
             )
+            .await?;
+
+        manager
+            .create_foreign_key(
+                ForeignKey::create()
+                    .name("fk-admission_academic_calendar")
+                    .from(ADMISSION_TABLE, "academic_calendar_identifier")
+                    .to(ACADEMIC_CALENDAR_TABLE, "identifier")
+                    .on_delete(ForeignKeyAction::Cascade)
+                    .on_update(ForeignKeyAction::Cascade)
+                    .to_owned(),
+            )
             .await
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_foreign_key(
+                ForeignKey::drop()
+                    .name("fk-admission_academic_calendar")
+                    .table(ADMISSION_TABLE)
+                    .to_owned(),
+            )
+            .await?;
+
         manager
             .drop_foreign_key(
                 ForeignKey::drop()

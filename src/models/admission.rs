@@ -21,12 +21,28 @@ pub struct Model {
     pub enquirers: Option<Vec<String>>,
     pub procedure: Option<Vec<String>>,
     pub extra_information: Vec<String>,
-    pub academic_year: String,
+    #[sea_orm(column_type = "VarBinary(StringLen::None)")]
+    pub academic_calendar_identifier: Vec<u8>,
     pub created_at: DateTime,
     pub updated_at: Option<DateTime>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+pub enum Relation {
+    #[sea_orm(
+        belongs_to = "super::academic_calendar::Entity",
+        from = "Column::AcademicCalendarIdentifier",
+        to = "super::academic_calendar::Column::Identifier",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    AcademicCalendar,
+}
+
+impl Related<super::academic_calendar::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::AcademicCalendar.def()
+    }
+}
 
 impl ActiveModelBehavior for ActiveModel {}

@@ -8,7 +8,7 @@ export type AdmissionInterface = {
   enquirers: Array<string> | null;
   procedure: Array<string> | null;
   extraInformation: Array<string>;
-  academicYear: string;
+  academicCalendarIdentifier: Array<number>;
   createdAt: string;
   updatedAt: string | null;
 };

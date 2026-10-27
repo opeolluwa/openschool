@@ -31,7 +31,11 @@ impl MigrationTrait for Migration {
                         "extra_information",
                         ColumnType::String(StringLen::None),
                     ))
-                    .col(string("academic_year"))
+                    .col(
+                        ColumnDef::new("academic_calendar_identifier")
+                            .binary_len(16)
+                            .not_null(),
+                    )
                     .col(date_time_default_now("created_at"))
                     .col(date_time_null("updated_at"))
                     .to_owned(),

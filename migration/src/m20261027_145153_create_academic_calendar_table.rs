@@ -102,6 +102,6 @@ pub enum AcademicCalendar {
     Type,
     Semester,
     Terms,
-    Quaters,
+    Quarters,
     SelfPaced,
 }

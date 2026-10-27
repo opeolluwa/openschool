@@ -19,7 +19,7 @@ pub enum AcademicCalendarType {
     Semester,
     #[sea_orm(string_value = "terms")]
     Terms,
-    #[sea_orm(string_value = "quaters")]
+    #[sea_orm(string_value = "quarters")]
     Quaters,
     #[sea_orm(string_value = "self_paced")]
     SelfPaced,
@@ -42,11 +42,11 @@ pub enum Gender {
 #[derive(
     Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize, ts_rs :: TS,
 )]
-#[sea_orm(rs_type = "Enum", db_type = "Enum", enum_name = "grading_system_enum")]
+#[sea_orm(rs_type = "Enum", db_type = "Enum", enum_name = "grading_system_type")]
 #[serde(rename_all = "snake_case")]
-pub enum GradingSystemEnum {
-    #[sea_orm(string_value = "grading_system_enum")]
-    GradingSystemEnum,
+pub enum GradingSystemType {
+    #[sea_orm(string_value = "grading_system_type")]
+    GradingSystemType,
     #[sea_orm(string_value = "gpa")]
     Gpa,
     #[sea_orm(string_value = "grades")]
