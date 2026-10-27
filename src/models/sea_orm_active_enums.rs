@@ -19,7 +19,7 @@ pub enum AcademicCalendarType {
     Semester,
     #[sea_orm(string_value = "terms")]
     Terms,
-    #[sea_orm(string_value = "quarters")]
+    #[sea_orm(string_value = "quaters")]
     Quaters,
     #[sea_orm(string_value = "self_paced")]
     SelfPaced,

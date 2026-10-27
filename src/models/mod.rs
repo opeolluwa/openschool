@@ -10,5 +10,6 @@ pub mod admission_applicant_guardian_data;
 pub mod contact_address;
 pub mod grading_system;
 pub mod institution;
+pub mod one_time_passwords;
 pub mod sea_orm_active_enums;
 pub mod seaql_migrations;

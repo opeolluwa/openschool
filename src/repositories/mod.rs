@@ -1,0 +1,9 @@
+pub mod academic_calendar;
+pub mod academic_period;
+pub mod admission_applicant;
+pub mod admission_applicant_guardian;
+pub mod base;
+pub mod contact_address;
+pub mod grading_system;
+pub mod institution;
+pub mod otp_repository;
