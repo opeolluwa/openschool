@@ -1,0 +1,11 @@
+.git
+.gitignore
+*.md
+air.toml
+tmp/
+*.log
+.env
+.env.example
+docker-compose.yaml
+__pycache__/
+.DS_Store
