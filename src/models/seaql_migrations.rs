@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 #[sea_orm(table_name = "seaql_migrations")]
 #[serde(rename_all = "camelCase")]
 #[openschool_macros::ts_rs_export_sea_orm_entity_name]
+#[openschool_macros::stringify_ulid_identifiers]
 pub struct Model {
     #[sea_orm(primary_key, auto_increment = false)]
     pub version: String,

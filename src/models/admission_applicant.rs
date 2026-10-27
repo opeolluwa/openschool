@@ -35,27 +35,27 @@ pub struct Model {
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
+    #[sea_orm(has_many = "super::admission_applicant_guardian_data::Entity")]
+    AdmissionApplicantGuardianData,
     #[sea_orm(
-        belongs_to = "super::admission_applicant_contact_address::Entity",
+        belongs_to = "super::contact_address::Entity",
         from = "Column::AddressIdentifier",
-        to = "super::admission_applicant_contact_address::Column::Identifier",
+        to = "super::contact_address::Column::Identifier",
         on_update = "Cascade",
         on_delete = "Cascade"
     )]
-    AdmissionApplicantContactAddress,
-    #[sea_orm(has_many = "super::admission_applicant_guardian_data::Entity")]
-    AdmissionApplicantGuardianData,
-}
-
-impl Related<super::admission_applicant_contact_address::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::AdmissionApplicantContactAddress.def()
-    }
+    ContactAddress,
 }
 
 impl Related<super::admission_applicant_guardian_data::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::AdmissionApplicantGuardianData.def()
+    }
+}
+
+impl Related<super::contact_address::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::ContactAddress.def()
     }
 }
 

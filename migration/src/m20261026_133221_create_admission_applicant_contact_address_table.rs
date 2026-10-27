@@ -8,7 +8,7 @@ impl MigrationName for Migration {
     }
 }
 
-pub const ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE: &str = "admission_applicant_contact_address";
+pub const CONTACT_ADDRESS_TABLE: &str = "contact_address";
 
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
@@ -16,7 +16,7 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE)
+                    .table(CONTACT_ADDRESS_TABLE)
                     .col(ColumnDef::new("identifier").binary_len(16).primary_key())
                     .col(string("address_line_one"))
                     .col(string_null("address_line_two"))
@@ -35,7 +35,7 @@ impl MigrationTrait for Migration {
         manager
             .drop_table(
                 Table::drop()
-                    .table(ADMISSION_APPLICANT_CONTACT_ADDRESS_TABLE)
+                    .table(CONTACT_ADDRESS_TABLE)
                     .to_owned(),
             )
             .await

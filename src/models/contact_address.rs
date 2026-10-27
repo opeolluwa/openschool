@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 #[openschool_macros::stringify_ulid_identifiers]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
-#[sea_orm(table_name = "admission_applicant_contact_address")]
+#[sea_orm(table_name = "contact_address")]
 #[serde(rename_all = "camelCase")]
 #[openschool_macros::ts_rs_export_sea_orm_entity_name]
 pub struct Model {
@@ -29,11 +29,19 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_one = "super::admission_applicant::Entity")]
     AdmissionApplicant,
+    #[sea_orm(has_one = "super::institution::Entity")]
+    Institution,
 }
 
 impl Related<super::admission_applicant::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::AdmissionApplicant.def()
+    }
+}
+
+impl Related<super::institution::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Institution.def()
     }
 }
 

@@ -79,7 +79,6 @@ pub(crate) fn expand(input: DeriveInput) -> syn::Result<TokenStream> {
         }
     }
 
-
     let helper_module = ulid_helper_module(&helper);
 
     Ok(quote!(
@@ -332,7 +331,6 @@ fn is_u8(ty: &Type) -> bool {
         .unwrap_or(false)
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -421,7 +419,7 @@ mod tests {
     }
 
     #[test]
-    fn generates_a_helper_module_and_serde_field_attributes() {
+    fn generates_a_helper_module_and_field_serde_attrs() {
         let input: DeriveInput = syn::parse2(quote! {
             #[sea_orm(table_name = "admission_applicant")]
             struct Model {
