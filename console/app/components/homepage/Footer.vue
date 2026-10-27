@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { footerSections, socialLinks, isExternalLink } from "~/data/homepage.routes";
+import { footerSections, socialLinks, isExternalLink } from "~/data/routes";
 </script>
 
 <template>
@@ -9,18 +9,11 @@ import { footerSections, socialLinks, isExternalLink } from "~/data/homepage.rou
         <!-- Brand -->
         <div class="lg:col-span-2">
           <NuxtLink to="/">
-            <img
-              src="#"
-              alt="OpenSchool"
-              width="271"
-              height="70"
-              class="h-10 w-auto"
-            />
+            <span class="text-xl font-black text-white">Model University</span>
           </NuxtLink>
           <p class="mt-4 text-sm text-gray-400 leading-relaxed max-w-xs">
-            A free, open-source school management platform. Self-host on your
-            own infrastructure for complete control over student data,
-            academics, and administration.
+            A leading institution committed to academic excellence,
+            innovation, and shaping the next generation of leaders.
           </p>
         </div>
 
@@ -59,8 +52,8 @@ import { footerSections, socialLinks, isExternalLink } from "~/data/homepage.rou
         class="mt-12 border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4"
       >
         <p class="text-xs text-gray-500">
-          &copy; {{ new Date().getFullYear() }} OpenSchool. Released under the
-          MIT License.
+          &copy; {{ new Date().getFullYear() }} Model University. All rights
+          reserved.
         </p>
 
         <div class="flex items-center gap-5">
