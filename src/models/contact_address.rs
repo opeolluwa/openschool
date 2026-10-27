@@ -3,11 +3,11 @@
 use sea_orm::entity::prelude::*;
 use serde::{Deserialize, Serialize};
 
-#[openschool_macros::stringify_ulid_identifiers]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
 #[sea_orm(table_name = "contact_address")]
 #[serde(rename_all = "camelCase")]
 #[openschool_macros::ts_rs_export_sea_orm_entity_name]
+#[openschool_macros::stringify_ulid_identifiers]
 pub struct Model {
     #[sea_orm(
         primary_key,
@@ -29,6 +29,8 @@ pub struct Model {
 pub enum Relation {
     #[sea_orm(has_one = "super::admission_applicant::Entity")]
     AdmissionApplicant,
+    #[sea_orm(has_one = "super::admission_applicant_guardian_data::Entity")]
+    AdmissionApplicantGuardianData,
     #[sea_orm(has_one = "super::institution::Entity")]
     Institution,
 }
@@ -36,6 +38,12 @@ pub enum Relation {
 impl Related<super::admission_applicant::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::AdmissionApplicant.def()
+    }
+}
+
+impl Related<super::admission_applicant_guardian_data::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::AdmissionApplicantGuardianData.def()
     }
 }
 

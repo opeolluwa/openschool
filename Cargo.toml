@@ -11,7 +11,7 @@ members = ["cache",
     "file-store",
     "kernel",
     "macros",
-    "mailman", "region",
+    "mailman", 
     "remittance",
 ]
 
