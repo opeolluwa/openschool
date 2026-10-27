@@ -15,9 +15,12 @@ pub struct Model {
         column_type = "VarBinary(StringLen::None)"
     )]
     pub identifier: Vec<u8>,
-    pub application_fee: i64,
-    pub deadline: Date,
-    pub eligibility: Vec<String>,
+    pub application_fee: Option<i64>,
+    pub deadline: Option<Date>,
+    pub eligibility: Option<Vec<String>>,
+    pub enquirers: Option<Vec<String>>,
+    pub procedure: Option<Vec<String>>,
+    pub extra_information: Vec<String>,
     pub academic_year: String,
     pub created_at: DateTime,
     pub updated_at: Option<DateTime>,

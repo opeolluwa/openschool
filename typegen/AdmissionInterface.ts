@@ -2,9 +2,12 @@
 
 export type AdmissionInterface = {
   identifier: Array<number>;
-  applicationFee: bigint;
-  deadline: string;
-  eligibility: Array<string>;
+  applicationFee: bigint | null;
+  deadline: string | null;
+  eligibility: Array<string> | null;
+  enquirers: Array<string> | null;
+  procedure: Array<string> | null;
+  extraInformation: Array<string>;
   academicYear: string;
   createdAt: string;
   updatedAt: string | null;
