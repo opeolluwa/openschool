@@ -1,8 +1,9 @@
 use std::{str::FromStr, time::Duration};
 
-use openschool_kernel::env::extract_env;
 use secrecy::SecretString;
 use serde::{Deserialize, Serialize};
+
+use openschool_kernel::env::extract_env;
 
 use crate::errors::app_error::AppError;
 

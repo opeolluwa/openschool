@@ -1,10 +1,11 @@
 use std::{str::FromStr, time::Duration};
 
+use secrecy::ExposeSecret;
+
 use openschool_mailman::{
     EMAIL_EVENT, EmailProvider as MailmanEmailProvider, MailTransportConfig, MailmanConfig,
     QueueConfig, QueueDriver, SenderIdentities, SenderIdentity, SmtpTlsMode as MailmanSmtpTlsMode,
 };
-use secrecy::ExposeSecret;
 
 use crate::{
     config::env::{AppConfig, EmailProvider, SmtpTlsMode},
