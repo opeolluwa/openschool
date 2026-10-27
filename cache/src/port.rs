@@ -1,6 +1,5 @@
-pub trait InvalidateCache{}
+pub trait InvalidateCache {}
 
+pub trait Set {}
 
-pub trait Set{}
-
-pub trait Set_Ex{}
+pub trait Set_Ex {}

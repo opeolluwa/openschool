@@ -18,7 +18,6 @@ use lib_openschool::middlewares::csrf::CsrfLayer;
 use lib_openschool::router::load_routes;
 use lib_openschool::services::{file_store::file_store_engine, mailer::mailman_config};
 use lib_openschool::states::AppState;
-
 use tower_http::{
     compression::CompressionLayer, limit::RequestBodyLimitLayer,
     sensitive_headers::SetSensitiveHeadersLayer, timeout::TimeoutLayer,

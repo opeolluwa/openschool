@@ -19,7 +19,6 @@ pub mod config;
 pub mod engine;
 pub mod error;
 pub mod job;
-
 pub use config::{QueueConfig, QueueDriver};
 pub use engine::QueueEngine;
 pub use error::QueueError;

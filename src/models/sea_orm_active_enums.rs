@@ -6,6 +6,27 @@ use serde::{Deserialize, Serialize};
 #[derive(
     Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize, ts_rs :: TS,
 )]
+#[sea_orm(
+    rs_type = "Enum",
+    db_type = "Enum",
+    enum_name = "academic_calendar_type"
+)]
+#[serde(rename_all = "snake_case")]
+pub enum AcademicCalendarType {
+    #[sea_orm(string_value = "academic_calendar_type")]
+    AcademicCalendarType,
+    #[sea_orm(string_value = "semester")]
+    Semester,
+    #[sea_orm(string_value = "terms")]
+    Terms,
+    #[sea_orm(string_value = "quarters")]
+    Quaters,
+    #[sea_orm(string_value = "self_paced")]
+    SelfPaced,
+}
+#[derive(
+    Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize, ts_rs :: TS,
+)]
 #[sea_orm(rs_type = "Enum", db_type = "Enum", enum_name = "gender")]
 #[serde(rename_all = "snake_case")]
 pub enum Gender {
@@ -17,6 +38,38 @@ pub enum Gender {
     Female,
     #[sea_orm(string_value = "others")]
     Others,
+}
+#[derive(
+    Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize, ts_rs :: TS,
+)]
+#[sea_orm(rs_type = "Enum", db_type = "Enum", enum_name = "grading_system_type")]
+#[serde(rename_all = "snake_case")]
+pub enum GradingSystemType {
+    #[sea_orm(string_value = "grading_system_type")]
+    GradingSystemType,
+    #[sea_orm(string_value = "gpa")]
+    Gpa,
+    #[sea_orm(string_value = "grades")]
+    Grades,
+    #[sea_orm(string_value = "competency")]
+    Competency,
+    #[sea_orm(string_value = "custom")]
+    Custom,
+}
+#[derive(
+    Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize, ts_rs :: TS,
+)]
+#[sea_orm(rs_type = "Enum", db_type = "Enum", enum_name = "institution_type")]
+#[serde(rename_all = "snake_case")]
+pub enum InstitutionType {
+    #[sea_orm(string_value = "institution_type")]
+    InstitutionType,
+    #[sea_orm(string_value = "higher_education")]
+    HigherEducation,
+    #[sea_orm(string_value = "primary_and_secondary_education")]
+    PrimaryAndSecondaryEducation,
+    #[sea_orm(string_value = "vocational_education")]
+    VocationalEducation,
 }
 #[derive(
     Debug, Clone, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, Deserialize, ts_rs :: TS,

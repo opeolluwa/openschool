@@ -2,10 +2,13 @@
 
 pub mod prelude;
 
+pub mod academic_calendar;
+pub mod academic_period;
 pub mod admission;
 pub mod admission_applicant;
 pub mod admission_applicant_guardian_data;
 pub mod contact_address;
+pub mod grading_system;
 pub mod institution;
 pub mod sea_orm_active_enums;
 pub mod seaql_migrations;

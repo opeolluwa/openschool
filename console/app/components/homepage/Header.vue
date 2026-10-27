@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { headerNavigation } from "~/data/homepage.routes";
+import { headerNavigation } from "~/data/routes";
 
 const navigation = headerNavigation;
 const mobileMenuOpen = ref(false);
@@ -58,7 +58,7 @@ function isActive(href: string) {
       class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8"
     >
       <div class="flex lg:flex-1">
-        <RyderLogo alt="OpenSchool" />
+        <RyderLogo alt="Model University" />
       </div>
 
       <!-- Mobile controls -->
@@ -98,9 +98,9 @@ function isActive(href: string) {
         class="hidden lg:flex lg:flex-1 lg:justify-end lg:items-center lg:gap-3"
       >
         <UColorModeButton />
-        <NuxtLink to="/public/get-started">
+        <NuxtLink to="/admission">
           <RyderButton size="sm" color="primary" variant="solid">
-            Get Started
+            Apply Now
           </RyderButton>
         </NuxtLink>
       </div>
@@ -171,13 +171,13 @@ function isActive(href: string) {
             </NuxtLink>
 
             <NuxtLink
-              to="/public/get-started"
+              to="/admission"
               class="flex items-center justify-between px-4 py-3.5 mt-1 rounded-xl font-medium text-white bg-primary-500 hover:bg-primary-600 transition-colors duration-150"
               @click="mobileMenuOpen = false"
             >
               <div class="flex items-center gap-3">
-                <UIcon name="ri:rocket-line" class="size-5" />
-                Get Started
+                <UIcon name="ri:edit-line" class="size-5" />
+                Apply Now
               </div>
               <UIcon name="ri:arrow-right-s-line" class="size-4" />
             </NuxtLink>
