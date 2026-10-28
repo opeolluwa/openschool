@@ -2,6 +2,11 @@ import type { StepperItem } from '@nuxt/ui'
 
 export const onboardingSteps: StepperItem[] = [
   {
+    title: 'Administrator account',
+    description: 'Email and password of the super admin',
+    icon: 'heroicons:user'
+  },
+  {
     title: 'General Information',
     description: 'Your institution name, address and related information',
     icon: 'i-lucide-house'
