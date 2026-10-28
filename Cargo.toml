@@ -8,7 +8,7 @@ default-run = "openschool"
 resolver = "3"
 members = ["cache",
     "event-bus",
-    "file-store",
+    "filestore",
     "kernel",
     "macros",
     "mailman", 
@@ -59,7 +59,7 @@ lettre = { version = "0.11.22", default-features = false, features = [
     "rustls-native-certs",
 ] }
 log = "0.4.27"
-openschool_file_storage = { version = "0.1.0", path = "file-store" }
+openschool_filestore = { version = "0.1.0", path = "filestore" }
 openschool_kernel = { version = "0.1.0", path = "kernel" }
 openschool_macros = { version = "0.1.0", path = "macros" }
 openschool_mailman = { path = "mailman" }
