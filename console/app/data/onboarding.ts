@@ -1,4 +1,9 @@
-import type { StepperItem } from '@nuxt/ui'
+export interface OnboardingStep {
+  key: string
+  title: string
+  description: string
+  icon: string
+}
 
 export const institutionTypes = [
   { label: 'Higher Education', value: 'higher_education' },
@@ -20,29 +25,29 @@ export const gradingSystemTypes = [
   { label: 'Custom', value: 'custom' }
 ]
 
-export const onboardingSteps = [
+export const onboardingSteps: OnboardingStep[] = [
   {
-    slot: 'admin-registration' as const,
+    key: 'admin-registration',
     title: 'Administrator Account',
     description: 'Email and password of the super admin',
     icon: 'heroicons:user'
   },
   {
-    slot: 'general-information' as const,
+    key: 'general-information',
     title: 'General Information',
     description: 'Your institution name, address and related information',
     icon: 'heroicons:building-library'
   },
   {
-    slot: 'contact-address' as const,
+    key: 'contact-address',
     title: 'Contact Address',
     description: 'Address and contact details for your institution',
     icon: 'heroicons:map-pin'
   },
   {
-    slot: 'academics' as const,
+    key: 'academics',
     title: 'Academics',
     description: 'Set up your academic sessions and curriculum',
     icon: 'heroicons:academic-cap'
   }
-] satisfies StepperItem[]
+]

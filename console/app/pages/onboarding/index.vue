@@ -1,43 +1,44 @@
 <script lang="ts" setup>
-import { onboardingSteps } from "~/data/onboarding";
-
 definePageMeta({ layout: "onboarding" });
-const stepper = useTemplateRef("stepper");
+
+const { currentStep, currentStepData, hasNext, hasPrev, next, prev } =
+    useOnboardingStepper();
 </script>
 
 <template>
-    <div class="w-full h-full relative">
-        <UStepper ref="stepper" :items="onboardingSteps" orientation="vertical">
-            <template #admin-registration>
-                <OnboardingAdminRegistration />
-            </template>
+    <div class="flex flex-col h-full px-24">
+        <div class="mb-8">
+            <RyderPageHeader
+                :title="currentStepData?.title"
+                :subtitle="currentStepData?.description"
+            />
+        </div>
 
-            <template #general-information>
-                <OnboardingGeneralInformation />
-            </template>
+        <div class="flex-1 overflow-y-auto">
+            <div>
+                <OnboardingAdminRegistration v-if="currentStep === 0" />
+                <OnboardingGeneralInformation v-else-if="currentStep === 1" />
+                <OnboardingContactAddress v-else-if="currentStep === 2" />
+                <OnboardingAcademics v-else-if="currentStep === 3" />
+            </div>
+        </div>
 
-            <template #contact-address>
-                <OnboardingContactAddress />
-            </template>
-
-            <template #academics>
-                <OnboardingAcademics />
-            </template>
-        </UStepper>
-
-        <div class="flex gap-2 justify-between absolute bottom-3 w-full px-1">
+        <div class="flex justify-between pt-6">
             <UButton
                 leading-icon="i-lucide-arrow-left"
-                :disabled="!stepper?.hasPrev"
-                @click="stepper?.prev()"
+                variant="outline"
+                size="lg"
+                :disabled="!hasPrev"
+                @click="prev()"
             >
                 Prev
             </UButton>
 
             <UButton
                 trailing-icon="i-lucide-arrow-right"
-                :disabled="!stepper?.hasNext"
-                @click="stepper?.next()"
+                size="lg"
+                :disabled="!hasNext"
+                @click="next()"
             >
                 Next
             </UButton>
