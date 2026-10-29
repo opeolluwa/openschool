@@ -1,3 +1,3 @@
 <template>
-<span>Openschool</span>
+<span>OpenSchool</span>
 </template>

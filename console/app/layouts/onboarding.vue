@@ -5,11 +5,17 @@ const { currentStep, steps } = useOnboardingStepper();
 <template>
     <div class="grid grid-cols-12 h-dvh">
         <div class="col-span-3 bg-primary-50 flex flex-col overflow-hidden">
-            <div class="p-8">
-                <h2 class="text-xl font-bold text-primary-900 mb-1">Welcome!</h2>
+            <div class="pt-12 px-8 pb-8">
+                <div class="mb-10">
+                    <AppLogo class="text-lg font-bold text-primary-900" />
+                </div>
+
+                <!-- <hr class="border-primary-200 mb-6" /> -->
+
+                <!-- <h2 class="text-xl font-bold text-primary-900 mb-1">Welcome!</h2>
                 <p class="text-sm text-primary-700 mb-8">
                     Let's set up your institution. Complete the steps to get started.
-                </p>
+                </p> -->
 
                 <nav class="space-y-6">
                     <div
