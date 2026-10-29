@@ -1,5 +1,5 @@
 [package]
-name = "openschool_event_bus"
+name = "openschool_eventbus"
 edition = "2024"
 publish = false
 

@@ -7,7 +7,7 @@ default-run = "openschool"
 [workspace]
 resolver = "3"
 members = ["cache",
-    "event-bus",
+    "eventbus",
     "filestore",
     "kernel",
     "macros",

@@ -2,7 +2,6 @@
 import { useNuxtApp } from "#app";
 const { $viewport } = useNuxtApp();
 
-
 watch($viewport.breakpoint, (_newBreakPoint, _oldBreakPoint) => {});
 </script>
 
@@ -18,6 +17,15 @@ watch($viewport.breakpoint, (_newBreakPoint, _oldBreakPoint) => {});
     </template>
 
     <template v-else>
-        <NuxtLayout> <NuxtPage /> </NuxtLayout
-    ></template>
+        <UApp
+            :toaster="{
+                position: 'top-right',
+                progress: true,
+                duration: 2500,
+                ui: { base: 'py-2' },
+            }"
+        >
+            <NuxtLayout> <NuxtPage /> </NuxtLayout>
+        </UApp>
+    </template>
 </template>
