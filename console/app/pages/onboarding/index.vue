@@ -6,16 +6,26 @@ const stepper = useTemplateRef("stepper");
 </script>
 
 <template>
-    <div class="w-full">
-        <UStepper ref="stepper" :items="onboardingSteps">
-            <template #content="{ item }">
-                <Placeholder class="aspect-video">
-                    {{ item.title }}
-                </Placeholder>
+    <div class="w-full h-full relative">
+        <UStepper ref="stepper" :items="onboardingSteps" orientation="vertical">
+            <template #admin-registration>
+                <OnboardingAdminRegistration />
+            </template>
+
+            <template #general-information>
+                <OnboardingGeneralInformation />
+            </template>
+
+            <template #contact-address>
+                <OnboardingContactAddress />
+            </template>
+
+            <template #academics>
+                <OnboardingAcademics />
             </template>
         </UStepper>
 
-        <div class="flex gap-2 justify-between mt-4 bg-red-500">
+        <div class="flex gap-2 justify-between absolute bottom-3 w-full px-1">
             <UButton
                 leading-icon="i-lucide-arrow-left"
                 :disabled="!stepper?.hasPrev"
