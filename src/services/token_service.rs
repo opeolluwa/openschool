@@ -2,8 +2,10 @@ use jsonwebtoken::{Algorithm, Header, decode, encode};
 use secrecy::{ExposeSecret, SecretString};
 use serde::{Deserialize, Serialize};
 
-
-use crate::{adapters::claims::{Claims, EntityKind, TokenType}, errors::authentication_error::AuthenticationError};
+use crate::{
+    adapters::claims::{Claims, EntityKind, TokenType},
+    errors::authentication_error::AuthenticationError,
+};
 
 #[derive(Clone)]
 pub struct TokenService {

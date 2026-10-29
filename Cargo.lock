@@ -4503,7 +4503,7 @@ name = "openschool_cache"
 version = "0.1.0"
 
 [[package]]
-name = "openschool_event_bus"
+name = "openschool_eventbus"
 version = "0.0.0"
 dependencies = [
  "bullmq-official",
@@ -4563,7 +4563,7 @@ dependencies = [
  "base64 0.22.1",
  "lettre",
  "mockall",
- "openschool_event_bus",
+ "openschool_eventbus",
  "reqwest",
  "secrecy",
  "serde",

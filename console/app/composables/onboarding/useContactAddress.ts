@@ -28,8 +28,7 @@ export function useContactAddress() {
   const onSubmit = async (req: Schema) => {
     try {
       isProcessing.value = true
-      // await $api.post($endpoints.onboarding.contactAddress, req)
-      console.log(req)
+      await $api.post($endpoints.onboarding.contactAddress, req)
     } catch (error) {
       throw error
     } finally {

@@ -8,7 +8,7 @@ ammonia = "4.1"
 askama = "0.15.6"
 base64 = "0.22"
 lettre = { version = "0.11.22", default-features = false, features = ["smtp-transport", "pool", "builder", "hostname", "tokio1-rustls", "ring", "rustls", "rustls-native-certs"] }
-openschool_event_bus = { path = "../event-bus" }
+openschool_eventbus = { path = "../eventbus" }
 reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls", "http2"] }
 secrecy = { version = "0.10.3", features = ["serde"] }
 serde = { version = "1.0.219", features = ["derive"] }

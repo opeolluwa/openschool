@@ -6,14 +6,7 @@ default-run = "openschool"
 
 [workspace]
 resolver = "3"
-members = ["cache",
-    "eventbus",
-    "filestore",
-    "kernel",
-    "macros",
-    "mailman", 
-    "remittance",
-]
+members = ["cache", "eventbus", "filestore", "kernel", "macros", "mailman", "remittance"]
 
 [lib]
 name = "lib_openschool"
