@@ -6,14 +6,7 @@ default-run = "openschool"
 
 [workspace]
 resolver = "3"
-members = ["cache",
-    "event-bus",
-    "filestore",
-    "kernel",
-    "macros",
-    "mailman", 
-    "remittance",
-]
+members = ["cache", "eventbus", "filestore", "kernel", "macros", "mailman", "remittance"]
 
 [lib]
 name = "lib_openschool"
@@ -89,6 +82,8 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_json = { version = "1.0.140", features = ["raw_value"] }
 serde_with = "3.16.0"
 sha2 = "0.10"
+strum = "0.28.0"
+strum_macros = "0.28.0"
 tempfile = "3.23.0"
 thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full", "macros"] }

@@ -15,7 +15,7 @@ pub struct AppState {
 impl AppState {
     pub fn new(db_pool: &DatabaseConnection, app_config: &AppConfig) -> Self {
         let repositories = Repositories::new(db_pool);
-        let services = Arc::new(ServiceState::new(repositories));
+        let services = Arc::new(ServiceState::new(repositories, app_config));
         let config = Arc::new(app_config.clone());
 
         Self { services, config }

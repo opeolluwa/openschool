@@ -113,7 +113,8 @@ pub struct AppConfig {
     #[serde(default = "default_paystack_verify_base_url")]
     pub paystack_verify_base_url: String,
 
-    // Token TTLs
+    // Token / Auth
+    pub jwt_signing_key: SecretString,
     pub access_token_ttl_secs: Duration,
     pub refresh_token_ttl_secs: Duration,
     #[serde(default = "default_cache_ttl")]
@@ -361,7 +362,8 @@ impl AppConfig {
 
             redis_url: SecretString::from(extract_env::<String>("REDIS_CONNECTION_URL")?),
 
-            // Token TTLs
+            // Token / Auth
+            jwt_signing_key: SecretString::from(extract_env::<String>("JWT_SIGNING_KEY")?),
             access_token_ttl_secs: Duration::from_secs(
                 extract_env::<u64>("ACCESS_TOKEN_TTL_IN_MINUTES").unwrap_or(10) * 60,
             ),

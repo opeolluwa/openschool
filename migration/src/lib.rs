@@ -9,6 +9,8 @@ mod m20261027_145153_create_academic_calendar_table;
 mod m20261027_145523_extend_institution_table;
 mod m20261027_162317_create_otp_table;
 mod m20261027_163136_add_failed_attempts_to_otp;
+mod m20261029_001409_create_admin_table;
+mod m20261029_100000_make_institution_fks_nullable;
 
 pub use sea_orm_migration::prelude::*;
 
@@ -29,6 +31,8 @@ impl MigratorTrait for Migrator {
             Box::new(m20261027_145523_extend_institution_table::Migration),
             Box::new(m20261027_162317_create_otp_table::Migration),
             Box::new(m20261027_163136_add_failed_attempts_to_otp::Migration),
+            Box::new(m20261029_001409_create_admin_table::Migration),
+            Box::new(m20261029_100000_make_institution_fks_nullable::Migration),
         ]
     }
 }

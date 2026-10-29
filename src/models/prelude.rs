@@ -2,6 +2,7 @@
 
 pub use super::academic_calendar::Entity as AcademicCalendar;
 pub use super::academic_period::Entity as AcademicPeriod;
+pub use super::admin_users::Entity as AdminUsers;
 pub use super::admission::Entity as Admission;
 pub use super::admission_applicant::Entity as AdmissionApplicant;
 pub use super::admission_applicant_guardian_data::Entity as AdmissionApplicantGuardianData;

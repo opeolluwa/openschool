@@ -27,10 +27,7 @@ pub trait ContactAddressRepositoryExt {
         payload: &ContactAddressPayload,
     ) -> Result<contact_address::Model, DatabaseError>;
 
-    async fn delete_contact_address(
-        &self,
-        identifier: &[u8],
-    ) -> Result<(), DatabaseError>;
+    async fn delete_contact_address(&self, identifier: &[u8]) -> Result<(), DatabaseError>;
 }
 
 #[derive(Debug, Clone)]
@@ -96,10 +93,7 @@ impl ContactAddressRepositoryExt for ContactAddressRepository {
         model.update(&self.db).await.map_err(DatabaseError::from)
     }
 
-    async fn delete_contact_address(
-        &self,
-        identifier: &[u8],
-    ) -> Result<(), DatabaseError> {
+    async fn delete_contact_address(&self, identifier: &[u8]) -> Result<(), DatabaseError> {
         let result = contact_address::Entity::delete_many()
             .filter(contact_address::Column::Identifier.eq(identifier))
             .exec(&self.db)
@@ -107,7 +101,9 @@ impl ContactAddressRepositoryExt for ContactAddressRepository {
             .map_err(DatabaseError::from)?;
 
         if result.rows_affected == 0 {
-            return Err(DatabaseError::NotFound("contact address not found".to_string()));
+            return Err(DatabaseError::NotFound(
+                "contact address not found".to_string(),
+            ));
         }
 
         Ok(())
