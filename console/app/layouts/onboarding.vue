@@ -5,7 +5,7 @@ const { currentStep, steps } = useOnboardingStepper();
 <template>
     <div class="grid grid-cols-12 h-dvh">
         <div class="col-span-3 bg-primary-50 flex flex-col overflow-hidden">
-            <div class="p-12">
+            <div class="p-8">
                 <h2 class="text-xl font-bold text-primary-900 mb-1">Welcome!</h2>
                 <p class="text-sm text-primary-700 mb-8">
                     Let's set up your institution. Complete the steps to get started.
@@ -24,7 +24,7 @@ const { currentStep, steps } = useOnboardingStepper();
                                     ? 'bg-primary-600 text-white'
                                     : index === currentStep
                                       ? 'bg-primary-600 text-white'
-                                      : 'bg-primary-100 text-primary-400',
+                                      : 'bg-primary-100 text-primary-600',
                             ]"
                         >
                             <UIcon
@@ -40,7 +40,7 @@ const { currentStep, steps } = useOnboardingStepper();
                                 :class="
                                     index <= currentStep
                                         ? 'text-primary-900'
-                                        : 'text-primary-400'
+                                        : 'text-muted'
                                 "
                             >
                                 {{ step.title }}
@@ -50,7 +50,7 @@ const { currentStep, steps } = useOnboardingStepper();
                                 :class="
                                     index <= currentStep
                                         ? 'text-primary-700'
-                                        : 'text-primary-300'
+                                        : 'text-muted'
                                 "
                             >
                                 {{ step.description }}

@@ -39,6 +39,7 @@ const { currentStep, currentStepData, hasNext, hasPrev, next, prev } =
                 size="lg"
                 :disabled="!hasNext"
                 @click="next()"
+                class="bg-primary"
             >
                 Next
             </UButton>
