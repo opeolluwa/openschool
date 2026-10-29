@@ -4,6 +4,7 @@ pub mod prelude;
 
 pub mod academic_calendar;
 pub mod academic_period;
+pub mod admin_users;
 pub mod admission;
 pub mod admission_applicant;
 pub mod admission_applicant_guardian_data;
