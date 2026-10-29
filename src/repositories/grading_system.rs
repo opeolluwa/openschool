@@ -12,7 +12,7 @@ pub trait GradingSystemRepositoryExt {
     async fn create(
         &self,
         name: &str,
-        system_type: GradingSystemType,
+        system_type: &GradingSystemType,
     ) -> Result<grading_system::Model, DatabaseError>;
 }
 
@@ -31,12 +31,12 @@ impl GradingSystemRepositoryExt for GradingSystemRepository {
     async fn create(
         &self,
         name: &str,
-        system_type: GradingSystemType,
+        system_type: &GradingSystemType,
     ) -> Result<grading_system::Model, DatabaseError> {
         let model = grading_system::ActiveModel {
             identifier: Set(Ulid::new().to_bytes().to_vec()),
             name: Set(name.to_owned()),
-            grading_system_type: Set(system_type),
+            grading_system_type: Set(system_type.to_owned()),
             ..Default::default()
         };
 

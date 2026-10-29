@@ -10,7 +10,6 @@ use crate::{
     extractors::contact_address::ContactAddressPayload,
     extractors::institution::RegisterInstitution,
     extractors::onboarding::RegisterAcademics,
-    models::sea_orm_active_enums::{AcademicCalendarType, GradingSystemType, InstitutionType},
     models::{admin_users, contact_address, institution},
     repositories::academic_calendar::{AcademicCalendarRepository, AcademicCalendarRepositoryExt},
     repositories::admin_user::{AdminUserRepository, AdminUserRepositoryExt},
@@ -81,41 +80,6 @@ impl OnboardingService {
             academic_calendar_repo,
             grading_system_repo,
         }
-    }
-}
-
-fn parse_institution_type(s: &str) -> Result<InstitutionType, ServiceError> {
-    match s {
-        "higher_education" => Ok(InstitutionType::HigherEducation),
-        "primary_and_secondary_education" => Ok(InstitutionType::PrimaryAndSecondaryEducation),
-        "vocational_education" => Ok(InstitutionType::VocationalEducation),
-        _ => Err(ServiceError::OperationFailed(format!(
-            "invalid institution type: {s}"
-        ))),
-    }
-}
-
-fn parse_academic_calendar_type(s: &str) -> Result<AcademicCalendarType, ServiceError> {
-    match s {
-        "semester" => Ok(AcademicCalendarType::Semester),
-        "terms" => Ok(AcademicCalendarType::Terms),
-        "quarters" => Ok(AcademicCalendarType::Quaters),
-        "self_paced" => Ok(AcademicCalendarType::SelfPaced),
-        _ => Err(ServiceError::OperationFailed(format!(
-            "invalid academic calendar type: {s}"
-        ))),
-    }
-}
-
-fn parse_grading_system_type(s: &str) -> Result<GradingSystemType, ServiceError> {
-    match s {
-        "gpa" => Ok(GradingSystemType::Gpa),
-        "grades" => Ok(GradingSystemType::Grades),
-        "competency" => Ok(GradingSystemType::Competency),
-        "custom" => Ok(GradingSystemType::Custom),
-        _ => Err(ServiceError::OperationFailed(format!(
-            "invalid grading system type: {s}"
-        ))),
     }
 }
 
@@ -256,18 +220,15 @@ impl OnboardingServiceTrait for OnboardingService {
         &self,
         req: &RegisterAcademics,
     ) -> Result<institution::Model, ServiceError> {
-        let calendar_type = parse_academic_calendar_type(&req.academic_calendar_type)?;
-        let grading_type = parse_grading_system_type(&req.grading_system_type)?;
-
         let calendar = self
             .academic_calendar_repo
-            .create(&req.calendar_name, calendar_type)
+            .create(&req.calendar_name, &req.academic_calendar_type)
             .await
             .map_err(ServiceError::DatabaseError)?;
 
         let grading = self
             .grading_system_repo
-            .create(&req.grading_system_name, grading_type)
+            .create(&req.grading_system_name, &req.grading_system_type)
             .await
             .map_err(ServiceError::DatabaseError)?;
 

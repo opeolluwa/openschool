@@ -12,7 +12,7 @@ pub trait AcademicCalendarRepositoryExt {
     async fn create(
         &self,
         name: &str,
-        calendar_type: AcademicCalendarType,
+        calendar_type: &AcademicCalendarType,
     ) -> Result<academic_calendar::Model, DatabaseError>;
 }
 
@@ -31,12 +31,12 @@ impl AcademicCalendarRepositoryExt for AcademicCalendarRepository {
     async fn create(
         &self,
         name: &str,
-        calendar_type: AcademicCalendarType,
+        calendar_type: &AcademicCalendarType,
     ) -> Result<academic_calendar::Model, DatabaseError> {
         let model = academic_calendar::ActiveModel {
             identifier: Set(Ulid::new().to_bytes().to_vec()),
             name: Set(name.to_owned()),
-            academic_calendar_type: Set(calendar_type),
+            academic_calendar_type: Set(calendar_type.to_owned()),
             ..Default::default()
         };
 
