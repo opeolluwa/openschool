@@ -1,5 +1,25 @@
 import type { StepperItem } from '@nuxt/ui'
 
+export const institutionTypes = [
+  { label: 'Higher Education', value: 'higher_education' },
+  { label: 'Primary & Secondary Education', value: 'primary_and_secondary_education' },
+  { label: 'Vocational Education', value: 'vocational_education' }
+]
+
+export const academicCalendarTypes = [
+  { label: 'Semester', value: 'semester' },
+  { label: 'Terms', value: 'terms' },
+  { label: 'Quarters', value: 'quarters' },
+  { label: 'Self-paced', value: 'self_paced' }
+]
+
+export const gradingSystemTypes = [
+  { label: 'GPA', value: 'gpa' },
+  { label: 'Grades', value: 'grades' },
+  { label: 'Competency', value: 'competency' },
+  { label: 'Custom', value: 'custom' }
+]
+
 export const onboardingSteps = [
   {
     slot: 'admin-registration' as const,

@@ -4463,7 +4463,7 @@ dependencies = [
  "lettre",
  "log",
  "mockall",
- "openschool_file_storage",
+ "openschool_filestore",
  "openschool_kernel",
  "openschool_macros",
  "openschool_mailman",
@@ -4516,7 +4516,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "openschool_file_storage"
+name = "openschool_filestore"
 version = "0.1.0"
 dependencies = [
  "aws-sdk-s3",
