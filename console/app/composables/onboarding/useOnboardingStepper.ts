@@ -14,6 +14,7 @@ export function useOnboardingStepper() {
   }
 
   const currentStepData = computed(() => onboardingSteps[currentStep.value])
+  const isLastStep = computed(() => currentStep.value === onboardingSteps.length - 1)
 
-  return { currentStep, hasNext, hasPrev, next, prev, steps: onboardingSteps, currentStepData }
+  return { currentStep, hasNext, hasPrev, next, prev, steps: onboardingSteps, currentStepData, isLastStep }
 }
