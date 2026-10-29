@@ -1,18 +1,16 @@
 use std::sync::Arc;
 
-use crate::services::onboarding::OnboardingServiceTrait;
-use crate::{
-    errors::service_error::ServiceError,
-    extractors::admin::CreateAdminUser,
-    extractors::contact_address::ContactAddressPayload,
-    extractors::institution::RegisterInstitution,
-    extractors::onboarding::RegisterAcademics,
-    middlewares::validator::ValidatedRequest,
-    states::AppState,
-};
 use axum::Json;
 use axum::extract::State;
 use serde_json::{Value, json};
+
+use crate::services::onboarding::OnboardingServiceTrait;
+use crate::{
+    errors::service_error::ServiceError, extractors::admin::CreateAdminUser,
+    extractors::contact_address::ContactAddressPayload,
+    extractors::institution::RegisterInstitution, extractors::onboarding::RegisterAcademics,
+    middlewares::validator::ValidatedRequest, states::AppState,
+};
 
 pub async fn register_admin(
     State(app): State<Arc<AppState>>,
@@ -27,7 +25,9 @@ pub async fn register_institution(
     ValidatedRequest(req): ValidatedRequest<RegisterInstitution>,
 ) -> Result<Json<Value>, ServiceError> {
     app.services.onboarding.register_institution(&req).await?;
-    Ok(Json(json! ({"message":"institution registered successfully"})))
+    Ok(Json(
+        json! ({"message":"institution registered successfully"}),
+    ))
 }
 
 pub async fn register_institution_address(
@@ -49,5 +49,7 @@ pub async fn register_institution_academics(
         .onboarding
         .register_institution_academics(&req)
         .await?;
-    Ok(Json(json! ({"message":"academics registered successfully"})))
+    Ok(Json(
+        json! ({"message":"academics registered successfully"}),
+    ))
 }
