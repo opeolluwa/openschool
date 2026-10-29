@@ -7,7 +7,12 @@ export default defineNuxtConfig({
     "@opeolluwa/ryder",
     "@nuxtjs/seo",
     "nuxt-viewport",
+    "@pinia/nuxt",
+    'pinia-plugin-persistedstate/nuxt',
   ],
+  pinia: {
+    storesDirs: ["./stores/**"],
+  },
   imports: {
     dirs: [
       // Scan top-level composables
