@@ -7,8 +7,10 @@ use axum::{
 use serde::{Serialize, de::DeserializeOwned};
 use validator::Validate;
 
-
-use crate::{adapters::claims::Claims, errors::{authentication_error::AuthenticationError, service_error::ServiceError}};
+use crate::{
+    adapters::claims::Claims,
+    errors::{authentication_error::AuthenticationError, service_error::ServiceError},
+};
 
 pub struct AuthenticatedRequest<T>
 where

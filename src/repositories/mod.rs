@@ -1,5 +1,6 @@
 pub mod academic_calendar;
 pub mod academic_period;
+pub mod admin_user;
 pub mod admission_applicant;
 pub mod admission_applicant_guardian;
 pub mod base;

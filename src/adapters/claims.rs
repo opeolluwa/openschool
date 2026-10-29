@@ -1,8 +1,6 @@
 use jsonwebtoken::DecodingKey;
 use serde::{Deserialize, Serialize};
 
-
-
 #[cfg(test)]
 pub const REFRESH_TOKEN_DURATION: std::time::Duration = std::time::Duration::from_secs(420 * 60);
 
@@ -35,7 +33,7 @@ pub enum TokenType {
     Invitation,
     AccountConfirmation,
 }
-// 
+//
 // impl From<(users::Model, TokenType)> for Claims {
 //     fn from((value, token_type): (users::Model, TokenType)) -> Self {
 //         Claims {

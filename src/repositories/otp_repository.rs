@@ -7,7 +7,7 @@ use sea_orm::{
 use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
-use crate::models::{one_time_passwords};
+use crate::models::one_time_passwords;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]
@@ -27,15 +27,10 @@ pub trait OtpRepositoryExt {
         owner_identifier: &str,
     ) -> Result<one_time_passwords::Model, DatabaseError>;
 
-    async fn revoke_otp(
-        &self,
-        owner_identifier: &str,
-    ) -> Result<(), DatabaseError>;
+    async fn revoke_otp(&self, owner_identifier: &str) -> Result<(), DatabaseError>;
 
-    async fn increment_failed_attempts(
-        &self,
-        owner_identifier: &str,
-    ) -> Result<i32, DatabaseError>;
+    async fn increment_failed_attempts(&self, owner_identifier: &str)
+    -> Result<i32, DatabaseError>;
 }
 
 #[derive(Debug, Clone)]
@@ -90,10 +85,7 @@ impl OtpRepositoryExt for OtpRepository {
             .ok_or_else(|| DatabaseError::NotFound("otp not found".to_string()))
     }
 
-    async fn revoke_otp(
-        &self,
-        owner_identifier: &str,
-    ) -> Result<(), DatabaseError> {
+    async fn revoke_otp(&self, owner_identifier: &str) -> Result<(), DatabaseError> {
         let result = one_time_passwords::Entity::delete_many()
             .filter(one_time_passwords::Column::OwnerIdentifier.eq(owner_identifier))
             .exec(&self.db)
