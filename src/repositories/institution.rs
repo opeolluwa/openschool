@@ -1,12 +1,9 @@
-use sea_orm::{
-    ActiveModelTrait, ActiveValue::Set, DatabaseConnection, EntityTrait,
-};
+use sea_orm::{ActiveModelTrait, ActiveValue::Set, DatabaseConnection, EntityTrait};
 use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
 use crate::extractors::institution::RegisterInstitution;
 use crate::models::institution;
-use crate::models::sea_orm_active_enums::InstitutionType;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]
@@ -15,7 +12,6 @@ pub trait InstitutionRepositoryExt {
     async fn create(
         &self,
         payload: &RegisterInstitution,
-        institution_type: InstitutionType,
     ) -> Result<institution::Model, DatabaseError>;
 
     async fn find_singleton(&self) -> Result<Option<institution::Model>, DatabaseError>;
@@ -24,7 +20,6 @@ pub trait InstitutionRepositoryExt {
         &self,
         existing: institution::Model,
         payload: &RegisterInstitution,
-        institution_type: InstitutionType,
     ) -> Result<institution::Model, DatabaseError>;
 
     async fn update_address(
@@ -56,14 +51,13 @@ impl InstitutionRepositoryExt for InstitutionRepository {
     async fn create(
         &self,
         payload: &RegisterInstitution,
-        institution_type: InstitutionType,
     ) -> Result<institution::Model, DatabaseError> {
         let model = institution::ActiveModel {
             identifier: Set(Ulid::new().to_bytes().to_vec()),
             name: Set(payload.name.clone()),
             tagline: Set(payload.tagline.clone()),
             logo_url: Set(payload.logo_url.clone().unwrap_or_default()),
-            institution_type: Set(institution_type),
+            institution_type: Set(payload.institution_type.to_owned()),
             address_identifier: Set(None),
             grading_system_identifier: Set(None),
             academic_calendar_identifier: Set(None),
@@ -84,13 +78,12 @@ impl InstitutionRepositoryExt for InstitutionRepository {
         &self,
         existing: institution::Model,
         payload: &RegisterInstitution,
-        institution_type: InstitutionType,
     ) -> Result<institution::Model, DatabaseError> {
         let mut active: institution::ActiveModel = existing.into();
         active.name = Set(payload.name.clone());
         active.tagline = Set(payload.tagline.clone());
-        active.logo_url = Set(payload.logo_url.clone().unwrap_or_default());
-        active.institution_type = Set(institution_type);
+        active.logo_url = Set(payload.logo_url.clone().unwrap_or_default()); //TODO: this should b be optional
+        active.institution_type = Set(payload.institution_type.to_owned());
         active.update(&self.db).await.map_err(DatabaseError::from)
     }
 

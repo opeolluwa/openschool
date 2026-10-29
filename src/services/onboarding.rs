@@ -10,10 +10,8 @@ use crate::{
     extractors::contact_address::ContactAddressPayload,
     extractors::institution::RegisterInstitution,
     extractors::onboarding::RegisterAcademics,
+    models::sea_orm_active_enums::{AcademicCalendarType, GradingSystemType, InstitutionType},
     models::{admin_users, contact_address, institution},
-    models::sea_orm_active_enums::{
-        AcademicCalendarType, GradingSystemType, InstitutionType,
-    },
     repositories::academic_calendar::{AcademicCalendarRepository, AcademicCalendarRepositoryExt},
     repositories::admin_user::{AdminUserRepository, AdminUserRepositoryExt},
     repositories::contact_address::{ContactAddressRepository, ContactAddressRepositoryExt},
@@ -206,8 +204,6 @@ impl OnboardingServiceTrait for OnboardingService {
         &self,
         req: &RegisterInstitution,
     ) -> Result<institution::Model, ServiceError> {
-        let institution_type = parse_institution_type(&req.institution_type)?;
-
         if let Some(existing) = self
             .institution_repo
             .find_singleton()
@@ -216,13 +212,13 @@ impl OnboardingServiceTrait for OnboardingService {
         {
             return self
                 .institution_repo
-                .update(existing, req, institution_type)
+                .update(existing, req)
                 .await
                 .map_err(ServiceError::DatabaseError);
         }
 
         self.institution_repo
-            .create(req, institution_type)
+            .create(req)
             .await
             .map_err(ServiceError::DatabaseError)
     }
