@@ -1,15 +1,30 @@
 <script setup lang="ts">
 const { schema, state, isProcessing, onSubmit } = useAdminRegistration();
-defineEmits(["onSubmit"]);
+
+const formRef = useTemplateRef<{ validate: () => Promise<any> }>("form");
+const toast = useToast();
+
+async function submit(): Promise<boolean> {
+    try {
+        await formRef.value!.validate();
+    } catch {
+        return false;
+    }
+
+    try {
+        await onSubmit(state);
+        return true;
+    } catch {
+        toast.add({ title: "Failed to save admin registration.", color: "error" });
+        return false;
+    }
+}
+
+defineExpose({ submit, isProcessing });
 </script>
 
 <template>
-    <UForm
-        class="space-y-5"
-        :schema="schema"
-        :state="state"
-        @submit="$emit('onSubmit')"
-    >
+    <UForm ref="form" class="space-y-5" :schema="schema" :state="state">
         <div class="grid gap-5 sm:grid-cols-2">
             <RyderInput
                 v-model="state.firstName"

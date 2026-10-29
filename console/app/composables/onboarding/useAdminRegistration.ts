@@ -34,7 +34,8 @@ export function useAdminRegistration() {
       isProcessing.value = true;
       // $api.post($endpoints.onboarding.adminRegistration);
       console.log(req);
-    } catch {
+    } catch (error) {
+      throw error;
     } finally {
       isProcessing.value = false;
     }

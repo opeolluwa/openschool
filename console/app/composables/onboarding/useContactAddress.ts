@@ -22,5 +22,20 @@ export function useContactAddress() {
     zipCode: ''
   })
 
-  return { schema, state }
+  const isProcessing = ref(false)
+  const { $api, $endpoints } = useNuxtApp()
+
+  const onSubmit = async (req: Schema) => {
+    try {
+      isProcessing.value = true
+      // await $api.post($endpoints.onboarding.contactAddress, req)
+      console.log(req)
+    } catch (error) {
+      throw error
+    } finally {
+      isProcessing.value = false
+    }
+  }
+
+  return { schema, state, isProcessing, onSubmit }
 }
