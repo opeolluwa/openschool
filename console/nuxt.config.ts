@@ -8,8 +8,14 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
     "nuxt-viewport",
     "@pinia/nuxt",
-    'pinia-plugin-persistedstate/nuxt',
+    "pinia-plugin-persistedstate/nuxt",
   ],
+
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL,
+    },
+  },
   pinia: {
     storesDirs: ["./stores/**"],
   },

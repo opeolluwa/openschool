@@ -24,8 +24,7 @@ export function useGeneralInformation() {
   const onSubmit = async (req: Schema) => {
     try {
       isProcessing.value = true
-      // await $api.post($endpoints.onboarding.generalInformation, req)
-      console.log(req)
+      await $api.post($endpoints.onboarding.generalInformation, req)
     } catch (error) {
       throw error
     } finally {

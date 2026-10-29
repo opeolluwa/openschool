@@ -32,8 +32,7 @@ export function useAdminRegistration() {
   const onSubmit = async (req: Schema) => {
     try {
       isProcessing.value = true;
-      // $api.post($endpoints.onboarding.adminRegistration);
-      console.log(req);
+      await $api.post($endpoints.onboarding.adminRegistration, req);
     } catch (error) {
       throw error;
     } finally {

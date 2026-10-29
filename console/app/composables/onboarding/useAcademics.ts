@@ -24,8 +24,7 @@ export function useAcademics() {
   const onSubmit = async (req: Schema) => {
     try {
       isProcessing.value = true
-      // await $api.post($endpoints.onboarding.academic, req)
-      console.log(req)
+      await $api.post($endpoints.onboarding.academic, req)
     } catch (error) {
       throw error
     } finally {

@@ -20,6 +20,10 @@ impl ServiceState {
         let onboarding = OnboardingService::new(
             repositories.admin_user.clone(),
             token_service.clone(),
+            repositories.institution.clone(),
+            repositories.contact_address.clone(),
+            repositories.academic_calendar.clone(),
+            repositories.grading_system.clone(),
         );
 
         Self {
