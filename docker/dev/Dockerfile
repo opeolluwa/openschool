@@ -42,7 +42,7 @@ CMD ["cargo", "watch", \
      "--ignore", "target/", \
      "-w", "src", \
      "-w", "migration", \
-     "-w", "templates", \
+     "-w", "mailman/templates", \
      "-w", "/macros", \
      "-x", "check", \
      "-x", "run --bin openschool"]

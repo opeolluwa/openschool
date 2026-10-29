@@ -1,4 +1,4 @@
-use openschool_file_storage::{
+use openschool_filestore::{
     FileStoreConfig, FileStoreEngine, FileStoreError, ImagekitConfig, S3Config, StorageBackend,
 };
 

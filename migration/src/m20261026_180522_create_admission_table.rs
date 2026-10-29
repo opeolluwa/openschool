@@ -19,10 +19,23 @@ impl MigrationTrait for Migration {
                     .table(ADMISSION_TABLE)
                     .if_not_exists()
                     .col(ColumnDef::new("identifier").binary_len(16).primary_key())
-                    .col(big_integer("application_fee"))
-                    .col(date("deadline"))
-                    .col(array("eligibility", ColumnType::String(StringLen::None)))
-                    .col(string("academic_year"))
+                    .col(big_integer_null("application_fee"))
+                    .col(date_null("deadline"))
+                    .col(array_null(
+                        "eligibility",
+                        ColumnType::String(StringLen::None),
+                    ))
+                    .col(array_null("enquirers", ColumnType::String(StringLen::None)))
+                    .col(array_null("procedure", ColumnType::String(StringLen::None)))
+                    .col(array(
+                        "extra_information",
+                        ColumnType::String(StringLen::None),
+                    ))
+                    .col(
+                        ColumnDef::new("academic_calendar_identifier")
+                            .binary_len(16)
+                            .not_null(),
+                    )
                     .col(date_time_default_now("created_at"))
                     .col(date_time_null("updated_at"))
                     .to_owned(),

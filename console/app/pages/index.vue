@@ -1,5 +1,8 @@
 <template>
   <HomepageHero />
-  <HomepageFeatures />
+  <HomepageAbout />
+  <HomepagePrograms />
+  <HomepageCampusLife />
+  <HomepageAdmissions />
   <HomepageTestimonials />
 </template>

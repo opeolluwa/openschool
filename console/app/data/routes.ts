@@ -11,36 +11,39 @@ export interface FooterLinkSection {
 }
 
 export const headerNavigation: HomepageRouteItem[] = [
-  { label: "Features", to: "/#features", icon: "ri:stack-line" },
-  { label: "Docs", to: "/public/docs", icon: "ri:book-open-line" },
-  { label: "Community", to: "/public/community", icon: "ri:team-line" },
+  { label: "Home", to: "/", icon: "ri:home-line" },
+  { label: "Library", to: "/library", icon: "ri:book-open-line" },
+  { label: "Programs", to: "/programs", icon: "ri:graduation-cap-line" },
+  { label: "Student", to: "/student", icon: "ri:user-line" },
+  { label: "Staff", to: "/staff", icon: "ri:team-line" },
+  { label: "Parent", to: "/parent", icon: "ri:parent-line" },
+  { label: "Blog", to: "/public/blog", icon: "ri:article-line" },
 ];
 
 export const footerSections: FooterLinkSection[] = [
   {
-    title: "Product",
+    title: "Academics",
     links: [
-      { label: "Features", to: "/#features" },
-      { label: "Self-Hosting", to: "/public/docs/self-hosting" },
-      { label: "Demo", to: "/public/demo" },
-      { label: "Changelog", to: "/public/changelog" },
+      { label: "Programs", to: "/programs" },
+      { label: "Library", to: "/library" },
+      { label: "Admissions", to: "/admission" },
+      { label: "Blog", to: "/public/blog" },
+    ],
+  },
+  {
+    title: "Campus",
+    links: [
+      { label: "Student Portal", to: "/student" },
+      { label: "Staff Portal", to: "/staff" },
+      { label: "Parent Portal", to: "/parent" },
     ],
   },
   {
     title: "Resources",
     links: [
       { label: "Documentation", to: "/public/docs" },
-      { label: "API Reference", to: "/public/docs/api" },
       { label: "Tutorials", to: "/public/docs/tutorials" },
-      { label: "Blog", to: "/public/blog" },
-    ],
-  },
-  {
-    title: "Community",
-    links: [
-      { label: "GitHub", to: "https://github.com/opeolluwa/openschool", external: true },
-      { label: "Discussions", to: "https://github.com/opeolluwa/openschool/discussions", external: true },
-      { label: "Contributing", to: "/public/docs/contributing" },
+      { label: "Community", to: "/public/community" },
     ],
   },
   {

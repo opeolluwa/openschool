@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+html {
+  scroll-behavior: smooth;
+  /* offset for the fixed header so anchored sections aren't hidden behind it */
+  scroll-padding-top: 72px;
+  overflow-x: hidden;
+}
+
+
+body {
+  font-family: "Lato", sans-serif;
+  /* Do NOT set overflow-x here — it creates a separate scroll container
+       that breaks smooth scrolling on the html element */
+  font-size: 16px;
+}
+
+
+
+
+@theme {
+    --color-primary-50: #eef7ef;
+    --color-primary-100: #dcefde;
+    --color-primary-200: #b9dfbe;
+    --color-primary-300: #96cf9d;
+    --color-primary-400: #73bf7c;
+    --color-primary-500: #50af5b;
+    --color-primary-600: #408c49;
+    --color-primary-700: #306937;
+    --color-primary-800: #204625;
+    --color-primary-900: #102312;
+    --color-primary-950: #0b180d;
+    
+
+
+  /* Onyx dark theme palette */
+  --color-onyx-50: #e0e6f2;
+  --color-onyx-100: #b8c4e0;
+  --color-onyx-200: #8a9dc6;
+  --color-onyx-300: #5e7aab;
+  --color-onyx-400: #375990;
+  --color-onyx-500: #1a2438;
+  --color-onyx-600: #141d30;
+  --color-onyx-700: #0f172a;
+  --color-onyx-800: #080e1a;
+  --color-onyx-900: #020407;
+  --color-onyx-950: #010203;
+
+  --default-font-family: "Lato", sans-serif;
+  --font-sans: "Lato", sans-serif;
+}

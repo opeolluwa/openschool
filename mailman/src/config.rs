@@ -1,8 +1,9 @@
 use std::{str::FromStr, time::Duration};
 
-use openschool_event_bus::{QueueConfig, QueueDriver};
 use secrecy::SecretString;
 use serde::{Deserialize, Serialize};
+
+use openschool_event_bus::{QueueConfig, QueueDriver};
 
 use crate::{
     contract::{EMAIL_EVENT, SenderIdentities},

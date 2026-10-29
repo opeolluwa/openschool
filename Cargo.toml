@@ -8,10 +8,10 @@ default-run = "openschool"
 resolver = "3"
 members = ["cache",
     "event-bus",
-    "file-store",
+    "filestore",
     "kernel",
     "macros",
-    "mailman", "region",
+    "mailman", 
     "remittance",
 ]
 
@@ -59,7 +59,7 @@ lettre = { version = "0.11.22", default-features = false, features = [
     "rustls-native-certs",
 ] }
 log = "0.4.27"
-openschool_file_storage = { version = "0.1.0", path = "file-store" }
+openschool_filestore = { version = "0.1.0", path = "filestore" }
 openschool_kernel = { version = "0.1.0", path = "kernel" }
 openschool_macros = { version = "0.1.0", path = "macros" }
 openschool_mailman = { path = "mailman" }
@@ -79,16 +79,7 @@ reqwest = { version = "0.12", default-features = false, features = [
 ] }
 rust_decimal = { version = "1.39.0", features = ["macros", "serde"] }
 sanitizer = { version = "1.0.0", features = ["derive"] }
-sea-orm = { version = "2.0.2", features = [
-    "runtime-tokio-rustls",
-    "sqlx-postgres",
-    "sqlx-sqlite",
-    "macros",
-    "debug-print",
-    "with-time",
-    "with-rust_decimal",
-    "with-uuid",
-] }
+sea-orm = { version = "2.0.2", features = ["runtime-tokio-rustls", "sqlx-postgres", "sqlx-sqlite", "macros", "debug-print", "with-time", "with-rust_decimal", "with-uuid", "seaography"] }
 sea-orm-migration = { version = "2.0.2", features = [
     "runtime-tokio-rustls",
     "sqlx-postgres",
@@ -98,6 +89,8 @@ serde = { version = "1.0.219", features = ["derive"] }
 serde_json = { version = "1.0.140", features = ["raw_value"] }
 serde_with = "3.16.0"
 sha2 = "0.10"
+strum = "0.28.0"
+strum_macros = "0.28.0"
 tempfile = "3.23.0"
 thiserror = "2.0.12"
 tokio = { version = "1.44.2", features = ["full", "macros"] }

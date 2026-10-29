@@ -13,6 +13,7 @@ export type AdmissionApplicantGuardianDataInterface = {
   occupation: string | null;
   photograph: string;
   nationality: string | null;
+  addressIdentifier: Array<number>;
   createdAt: string;
   updatedAt: string | null;
 };

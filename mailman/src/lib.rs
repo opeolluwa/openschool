@@ -23,9 +23,6 @@ pub mod processor;
 pub mod publisher;
 pub mod sanitize;
 pub mod smtp;
-
-use openschool_event_bus::QueueEngine;
-
 pub use config::{EmailProvider, MailTransportConfig, MailmanConfig, SmtpTlsMode};
 pub use contract::{
     EMAIL_EVENT, EmailAttachment, EmailCategory, EmailContext, EmailSender, SenderIdentities,
@@ -33,9 +30,11 @@ pub use contract::{
 };
 pub use engine::EmailEngine;
 pub use error::{EmailServiceError, MailmanError};
-pub use openschool_event_bus::{HandlerError, JobContext, QueueConfig, QueueDriver, QueueError};
 pub use processor::{process_event, start_processor};
 pub use publisher::EventEmailSender;
+
+use openschool_event_bus::QueueEngine;
+pub use openschool_event_bus::{HandlerError, JobContext, QueueConfig, QueueDriver, QueueError};
 
 /// A running mailman: the event bus, the producer handle, and subscription state.
 ///

@@ -49,7 +49,7 @@
                 inset: 0;
                 z-index: -1;
                 pointer-events: none;
-                background: url("https://example.com/assets/OpenSchool%20Logo.png")
+                background: url("https://ik.imagekit.io/vkqa6un9v/assets/Weangel%20Agrovet%20Logo.png")
                     center / 360px auto no-repeat;
                 opacity: 0.075;
             }
@@ -260,6 +260,39 @@
                 font-size: 12px;
             }
 
+            .footer {
+                display: grid;
+                grid-template-columns: 0.8fr 1.1fr 1.4fr;
+                gap: 24px;
+                margin-top: 36px;
+                padding-top: 24px;
+                border-top: 2px solid var(--brand);
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            .footer-col {
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-col .icon {
+                width: 20px;
+                height: 20px;
+                margin-bottom: 10px;
+                object-fit: contain;
+            }
+
+            .footer-col span {
+                color: var(--muted);
+                font-size: 10px;
+                line-height: 1.7;
+                overflow-wrap: anywhere;
+            }
+
             @page {
                 size: A4 portrait;
                 margin: 14mm;
@@ -311,7 +344,8 @@
                 tr,
                 .totals,
                 .amount-in-words,
-                .authorization {
+                .authorization,
+                .footer {
                     break-inside: avoid;
                     page-break-inside: avoid;
                 }
@@ -354,6 +388,11 @@
                     text-align: left;
                 }
 
+                .footer {
+                    grid-template-columns: 1fr;
+                    gap: 24px;
+                }
+
                 table {
                     font-size: 11px;
                 }
@@ -372,8 +411,8 @@
                 <p class="invoice-number">{{ identifier }}</p>
             </div>
             <img
-                src="https://example.com/assets/OpenSchool%20Logo.png"
-                alt="OpenSchool"
+                src="https://ik.imagekit.io/vkqa6un9v/assets/Weangel%20Agrovet%20Logo.png"
+                alt="Weangel Konsult"
                 width="150"
                 style="
                     width: 150px;
@@ -453,5 +492,35 @@
             </p>
         </div>
         {% endif %}
+
+        <div class="footer">
+            <div class="footer-col">
+                <img
+                    class="icon"
+                    src="https://ik.imagekit.io/vkqa6un9v/assets/icons8-phone-64.png"
+                    alt="Phone"
+                />
+                <span>+2348066570002<br />+2349027199480</span>
+            </div>
+            <div class="footer-col">
+                <img
+                    class="icon"
+                    src="https://ik.imagekit.io/vkqa6un9v/assets/icons8-email-64.png"
+                    alt="Email"
+                />
+                <span>info@weangelkonsult.com<br />support@weangelkonsult.com</span>
+            </div>
+            <div class="footer-col">
+                <img
+                    class="icon"
+                    src="https://ik.imagekit.io/vkqa6un9v/assets/icons8-map-64.png"
+                    alt="Address"
+                />
+                <span
+                    >Km 4, Opposite BT Grand Hotel, Gbonogun, Abeokuta, Ogun State,
+                    Nigeria</span
+                >
+            </div>
+        </div>
     </body>
 </html>

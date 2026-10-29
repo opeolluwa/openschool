@@ -11,9 +11,8 @@ use axum_extra::{
     TypedHeader,
     headers::{Authorization, authorization::Bearer},
 };
-use jsonwebtoken::{Algorithm, Validation, decode};
-
 use jsonwebtoken::DecodingKey;
+use jsonwebtoken::{Algorithm, Validation, decode};
 
 use crate::dto::claims::{Claims, EntityKind, TokenType};
 use crate::errors::authentication_error::AuthenticationError;

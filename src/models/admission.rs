@@ -15,15 +15,34 @@ pub struct Model {
         column_type = "VarBinary(StringLen::None)"
     )]
     pub identifier: Vec<u8>,
-    pub application_fee: i64,
-    pub deadline: Date,
-    pub eligibility: Vec<String>,
-    pub academic_year: String,
+    pub application_fee: Option<i64>,
+    pub deadline: Option<Date>,
+    pub eligibility: Option<Vec<String>>,
+    pub enquirers: Option<Vec<String>>,
+    pub procedure: Option<Vec<String>>,
+    pub extra_information: Vec<String>,
+    #[sea_orm(column_type = "VarBinary(StringLen::None)")]
+    pub academic_calendar_identifier: Vec<u8>,
     pub created_at: DateTime,
     pub updated_at: Option<DateTime>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+pub enum Relation {
+    #[sea_orm(
+        belongs_to = "super::academic_calendar::Entity",
+        from = "Column::AcademicCalendarIdentifier",
+        to = "super::academic_calendar::Column::Identifier",
+        on_update = "Cascade",
+        on_delete = "Cascade"
+    )]
+    AcademicCalendar,
+}
+
+impl Related<super::academic_calendar::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::AcademicCalendar.def()
+    }
+}
 
 impl ActiveModelBehavior for ActiveModel {}

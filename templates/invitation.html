@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}You're invited to OpenSchool Backoffice{% endblock %}
+{% block title %}You're invited to Weangel Backoffice{% endblock %}
 
 {% block preheader %}
   {% if inviter_name != "" %}
-    {{ inviter_name }} invited you to join the OpenSchool team.
+    {{ inviter_name }} invited you to join the Weangel Konsult team.
   {% else %}
-    You've been invited to join the OpenSchool team.
+    You've been invited to join the Weangel Konsult team.
   {% endif %}
 {% endblock %}
 
@@ -22,10 +22,10 @@
   <p style="margin: 0 0 16px; color: #4a5560;">
     {% if inviter_name != "" %}
       <strong style="color: #0d1220;">{{ inviter_name }}</strong> has invited you
-      to join the team on OpenSchool Backoffice. You'll be joining a workspace your
+      to join the team on Weangel Backoffice. You'll be joining a workspace your
       team is already using, so there's nothing to set up from scratch.
     {% else %}
-      You've been invited to join the team on OpenSchool Backoffice. You'll be
+      You've been invited to join the team on Weangel Backoffice. You'll be
       joining a workspace your team is already using, so there's nothing to set
       up from scratch.
     {% endif %}
@@ -188,6 +188,6 @@
     Didn't expect this invitation? You can safely ignore this email. No account
     is created unless you complete the form above, and your administrator can
     revoke the invite at any time. Questions? Reply to this email or write to
-    support@openschool.com.
+    support@weangelkonsult.com.
   </p>
 {% endblock %}

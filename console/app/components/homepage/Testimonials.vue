@@ -1,25 +1,25 @@
 <script setup lang="ts">
 const testimonials = [
   {
-    name: "Sarah Johnson",
-    role: "Principal, Greenfield Academy",
-    initials: "SJ",
+    name: "Amina Ibrahim",
+    role: "Computer Science, Class of 2025",
+    initials: "AI",
     quote:
-      "OpenSchool transformed how we manage our school. From admissions to report cards, everything is in one place.",
+      "Model University gave me the foundation and confidence to pursue my dream career in tech. The faculty and resources are world-class.",
   },
   {
-    name: "David Okonkwo",
-    role: "IT Administrator, Sunrise Schools",
-    initials: "DO",
+    name: "James Okafor",
+    role: "Business Administration, Class of 2024",
+    initials: "JO",
     quote:
-      "Self-hosting gives us complete control over our data. The setup was straightforward and the docs are excellent.",
+      "The hands-on learning approach and internship opportunities prepared me for the real world long before graduation.",
   },
   {
-    name: "Maria Chen",
-    role: "Teacher, Lakeside International",
-    initials: "MC",
+    name: "Fatima Al-Hassan",
+    role: "Medicine, Class of 2026",
+    initials: "FA",
     quote:
-      "The attendance and grading tools save me hours every week. I can focus on teaching instead of paperwork.",
+      "From the modern laboratories to the supportive community, everything about this university inspires me to keep pushing forward.",
   },
 ];
 </script>
@@ -36,10 +36,10 @@ const testimonials = [
         <h2
           class="mt-2 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl dark:text-white"
         >
-          Trusted by schools everywhere
+          Hear from Our Students
         </h2>
         <p class="mt-2 text-sm text-gray-500 sm:text-base dark:text-gray-400">
-          Hear from educators and administrators using OpenSchool.
+          Discover what makes Model University a place where students thrive.
         </p>
       </div>
 
