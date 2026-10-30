@@ -7,7 +7,7 @@ use sea_orm::{
 use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
-use crate::models::one_time_passwords;
+use openschool_models::one_time_passwords;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]

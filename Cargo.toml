@@ -6,7 +6,51 @@ default-run = "openschool"
 
 [workspace]
 resolver = "3"
-members = ["cache", "eventbus", "filestore", "kernel", "macros", "mailman", "remittance"]
+members = ["cache", "eventbus", "filestore", "kernel", "macros", "mailman", "models", "remittance"]
+
+[workspace.dependencies]
+# Serialization
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = { version = "1.0.140", features = ["raw_value"] }
+
+# Async runtime
+tokio = { version = "1.44.2", features = ["full", "macros"] }
+
+# Error handling
+thiserror = "2.0.12"
+
+# HTTP client
+reqwest = { version = "0.12", default-features = false, features = ["json", "multipart", "rustls-tls", "http2"] }
+
+# Database
+sea-orm = { version = "2.0.2", features = ["runtime-tokio-rustls", "sqlx-postgres", "macros", "with-time", "with-rust_decimal", "with-uuid"] }
+
+# Observability
+tracing = "0.1"
+
+# Secrets
+secrecy = { version = "0.10.3", features = ["serde"] }
+
+# IDs
+ulid = { version = "1.2.1", features = ["serde"] }
+uuid = { version = "1.24.0", features = ["v4"] }
+
+# Common
+base64 = "0.22"
+url = "2.5"
+rust_decimal = { version = "1.39.0", features = ["macros", "serde"] }
+ts-rs = { version = "11.1.0", features = ["uuid-impl", "chrono-impl", "format", "serde-json-impl", "bigdecimal-impl"] }
+mockall = "0.13"
+
+# Workspace-internal crates
+openschool_models = { path = "models" }
+openschool_kernel = { path = "kernel" }
+openschool_macros = { path = "macros" }
+openschool_remittance = { path = "remittance" }
+openschool_mailman = { path = "mailman" }
+openschool_filestore = { version = "0.1.0", path = "filestore" }
+openschool_eventbus = { path = "eventbus" }
+openschool_migration = { version = "0.1.0", path = "migration" }
 
 [lib]
 name = "lib_openschool"
@@ -21,13 +65,35 @@ name = "openschool-cli"
 path = "src/bin/openschool-cli.rs"
 
 [dependencies]
+# Inherited from workspace
+base64.workspace = true
+openschool_filestore.workspace = true
+openschool_kernel.workspace = true
+openschool_macros.workspace = true
+openschool_mailman.workspace = true
+openschool_models.workspace = true
+openschool_migration.workspace = true
+openschool_remittance.workspace = true
+reqwest.workspace = true
+rust_decimal.workspace = true
+sea-orm = { workspace = true, features = ["sqlx-sqlite", "debug-print", "seaography"] }
+secrecy.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+ulid.workspace = true
+url.workspace = true
+uuid.workspace = true
+
+# App-specific
 ammonia = "4.1"
 askama = "0.15.6"
 axum = { version = "0.8.3", features = ["macros", "ws"] }
 axum-extra = { version = "0.12.1", features = ["typed-header"] }
 axum-governor = "2.1.2"
 axum_typed_multipart = { version = "0.16.3", features = ["tempfile_3"] }
-base64 = "0.22"
 bcrypt = "0.17.0"
 bullmq-official = "1.1.0"
 chrono = { version = "0.4.41", features = ["serde"] }
@@ -52,11 +118,6 @@ lettre = { version = "0.11.22", default-features = false, features = [
     "rustls-native-certs",
 ] }
 log = "0.4.27"
-openschool_filestore = { version = "0.1.0", path = "filestore" }
-openschool_kernel = { version = "0.1.0", path = "kernel" }
-openschool_macros = { version = "0.1.0", path = "macros" }
-openschool_mailman = { path = "mailman" }
-openschool_migration = { version = "0.1.0", path = "migration" }
 rand = "0.10.3"
 redis = { version = "1.4.1", features = [
     "tokio-comp",
@@ -64,29 +125,16 @@ redis = { version = "1.4.1", features = [
     "connection-manager",
     "tokio-rustls-comp",
 ] }
-reqwest = { version = "0.12", default-features = false, features = [
-    "json",
-    "multipart",
-    "rustls-tls",
-    "http2",
-] }
-rust_decimal = { version = "1.39.0", features = ["macros", "serde"] }
 sanitizer = { version = "1.0.0", features = ["derive"] }
-sea-orm = { version = "2.0.2", features = ["runtime-tokio-rustls", "sqlx-postgres", "sqlx-sqlite", "macros", "debug-print", "with-time", "with-rust_decimal", "with-uuid", "seaography"] }
 sea-orm-migration = { version = "2.0.2", features = [
     "runtime-tokio-rustls",
     "sqlx-postgres",
 ] }
-secrecy = { version = "0.10.3", features = ["serde"] }
-serde = { version = "1.0.219", features = ["derive"] }
-serde_json = { version = "1.0.140", features = ["raw_value"] }
 serde_with = "3.16.0"
 sha2 = "0.10"
 strum = "0.28.0"
 strum_macros = "0.28.0"
 tempfile = "3.23.0"
-thiserror = "2.0.12"
-tokio = { version = "1.44.2", features = ["full", "macros"] }
 tokio-util = { version = "0.7", features = ["io"] }
 tower = { version = "0.5.2", features = ["limit", "timeout"] }
 tower-http = { version = "0.6.6", features = [
@@ -100,29 +148,19 @@ tower-http = { version = "0.6.6", features = [
     "compression-gzip",
     "compression-br",
 ] }
-tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-ts-rs = { version = "11.1.0", features = [
-    "uuid-impl",
-    "chrono-impl",
-    "format",
-    "serde-json-impl",
-    "bigdecimal-impl",
-] }
+ts-rs.workspace = true
 typed-builder = "0.23.2"
-ulid = { version = "1.2.1", features = ["serde"] }
-url = "2.5"
-uuid = { version = "1.24.0", features = ["v4"] }
 validator = { version = "0.20.0", features = ["derive"] }
 
 [dev-dependencies]
 axum-test = "18.2.1"
 futures-util = { version = "0.3", features = ["std"] }
-mockall = "0.13"
-sea-orm = { version = "2.0.2", features = ["sqlx-sqlite"] }
-secrecy = { version = "0.10.3", features = ["serde"] }
-serde_json = "1.0.140"
-tokio = { version = "1.44.2", features = ["full", "macros"] }
+mockall.workspace = true
+sea-orm = { workspace = true, features = ["sqlx-sqlite"] }
+secrecy.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
 
 [profile.release]
 opt-level = 3

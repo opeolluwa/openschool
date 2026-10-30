@@ -16,7 +16,9 @@ use lib_openschool::config::{
 use lib_openschool::errors::app_error::AppError;
 use lib_openschool::middlewares::csrf::CsrfLayer;
 use lib_openschool::router::load_routes;
-use lib_openschool::services::{file_store::file_store_engine, mailer::mailman_config};
+use lib_openschool::services::{
+    file_store::file_store_engine, mailer::mailman_config, remittance::remittance_config,
+};
 use lib_openschool::states::AppState;
 use tower_http::{
     compression::CompressionLayer, limit::RequestBodyLimitLayer,
@@ -62,7 +64,13 @@ async fn main() -> Result<(), AppError> {
     init_tracing(&app_config);
 
     let db_conn = init_db_pool(&app_config).await?;
-    let app_state = Arc::new(AppState::new(&db_conn, &app_config));
+
+    let remittance_settings = remittance_config(&app_config)?;
+    let remittance = openschool_remittance::start(&remittance_settings, &db_conn)
+        .map_err(|err| AppError::StartupError(format!("remittance failed to start: {err}")))?;
+    tracing::info!(backend = %remittance.backend(), "remittance started");
+
+    let app_state = Arc::new(AppState::new(&db_conn, &app_config, remittance));
 
     let mailman_settings = mailman_config(&app_config)?;
     let mailman_health = mailman_settings.clone();

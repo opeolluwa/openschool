@@ -3,7 +3,7 @@ use sanitizer::prelude::*;
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
-use crate::models::sea_orm_active_enums::{AcademicCalendarType, GradingSystemType};
+use openschool_models::sea_orm_active_enums::{AcademicCalendarType, GradingSystemType};
 
 #[derive(Debug, Serialize, Deserialize, Validate, Sanitizer)]
 #[serde(rename_all = "camelCase")]

@@ -68,7 +68,9 @@ migrate-add target:
         --model-extra-attributes 'openschool_macros::ts_rs_export_sea_orm_entity_name' \
         --model-extra-attributes 'openschool_macros::stringify_ulid_identifiers' \
         --ignore-tables openschool_server_migrations \
-        -o src/models
+        -o models/src \
+        --lib
+        
 
 #Pull DB schema, regenerate entities, and export bindings
 db-pull:

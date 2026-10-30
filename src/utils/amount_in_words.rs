@@ -1,4 +1,4 @@
-use crate::models::sea_orm_active_enums::ProductCurrency;
+use openschool_models::sea_orm_active_enums::ProductCurrency;
 use crate::utils::currency::parse_currency;
 
 const ONES: [&str; 20] = [

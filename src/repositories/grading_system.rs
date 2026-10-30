@@ -2,8 +2,8 @@ use sea_orm::{ActiveModelTrait, ActiveValue::Set, DatabaseConnection};
 use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
-use crate::models::grading_system;
-use crate::models::sea_orm_active_enums::GradingSystemType;
+use openschool_models::grading_system;
+use openschool_models::sea_orm_active_enums::GradingSystemType;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]

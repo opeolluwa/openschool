@@ -7,12 +7,14 @@ use axum::{Json, Router};
 use serde_json::json;
 
 use crate::router::onboarding::register_onboarding_routes;
+use crate::router::webhook::register_webhook_routes;
 use crate::states::AppState;
 
 pub fn load_routes(app_state: &Arc<AppState>) -> Router {
     Router::new()
         .route("/health", any(|| async { "Service healthy" }))
         .merge(register_onboarding_routes(app_state))
+        .merge(register_webhook_routes(app_state))
         .fallback(global_404_fallback)
 }
 

@@ -3,7 +3,7 @@ use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
 use crate::extractors::institution::RegisterInstitution;
-use crate::models::institution;
+use openschool_models::institution;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]
