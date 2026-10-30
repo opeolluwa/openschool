@@ -120,12 +120,6 @@ build-prod:
 run-prod:
     docker run --rm --env-file .env.prod -p 8000:8000 openschool:prod
 
-#Seed analytics dashboard data (dev only)
-@seed-analytics:
-    {{ DOCKER_CMD }} up -d postgres
-    {{ DOCKER_CMD }} cp scripts/sql/analytics_seed.sql postgres:/tmp/analytics_seed.sql
-    {{ DOCKER_CMD }} exec -T postgres psql -U ${DATABASE_USER} -d ${DATABASE_NAME} -v ON_ERROR_STOP=1 -f /tmp/analytics_seed.sql
-
 install-dependencies:
     cargo install seaography-cli
     cargo install just 
@@ -133,3 +127,15 @@ install-dependencies:
     cargo install cargo-audit
     cargo install sea-orm-cli
     cargo install cargo-group-imports
+
+
+dev target:
+    #!/usr/bin/env python3
+    import subprocess
+    target = "{{target}}"
+    if target == "console":
+        subprocess.run(["pnpm", "run", "dev"], cwd="console", check=True)
+    else:
+        subprocess.run(["just", "watch"])
+        
+    
