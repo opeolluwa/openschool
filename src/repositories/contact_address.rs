@@ -5,7 +5,7 @@ use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
 use crate::extractors::contact_address::ContactAddressPayload;
-use crate::models::contact_address;
+use openschool_models::contact_address;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]

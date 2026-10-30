@@ -11,8 +11,7 @@ use crate::errors::email_service_error::EmailServiceError;
 use crate::errors::filesystem_error::AppFileSystemError;
 use crate::errors::imagekit_error::ImagekitError;
 use crate::errors::otp_service_error::OtpServiceError;
-
-// use crate::services::payment::error::PaymentError;
+use openschool_remittance::error::RemittanceError;
 
 #[derive(thiserror::Error, Debug)]
 pub enum ServiceError {
@@ -56,8 +55,8 @@ pub enum ServiceError {
     TooManyRequests(String),
     #[error(transparent)]
     EmailError(#[from] EmailServiceError),
-    // #[error(transparent)]
-    // PaymentError(#[from] PaymentError),
+    #[error(transparent)]
+    RemittanceError(#[from] RemittanceError),
 }
 
 impl ServiceError {
@@ -73,13 +72,10 @@ impl ServiceError {
             ServiceError::Conflict(_) => StatusCode::CONFLICT,
             ServiceError::TooManyRequests(_) => StatusCode::TOO_MANY_REQUESTS,
             ServiceError::EmailError(error) => error.status_code(),
-            // ServiceError::PaymentError(error) => match error {
-            //     PaymentError::InvalidRequest => StatusCode::BAD_REQUEST,
-            //     PaymentError::Unauthorized => StatusCode::UNAUTHORIZED,
-            //     PaymentError::NotFound => StatusCode::NOT_FOUND,
-            //     PaymentError::ServerError => StatusCode::INTERNAL_SERVER_ERROR,
-            //     PaymentError::UnexpectedError(_) => StatusCode::INTERNAL_SERVER_ERROR,
-            // },
+            ServiceError::RemittanceError(error) => match error {
+                RemittanceError::Provider(pe) if pe.is_permanent() => StatusCode::BAD_REQUEST,
+                _ => StatusCode::INTERNAL_SERVER_ERROR,
+            },
             ServiceError::AuthenticationError(error) => error.status_code(),
             ServiceError::OtpServiceError(error) => error.status_code(),
             ServiceError::DatabaseError(error) => error.status_code(),

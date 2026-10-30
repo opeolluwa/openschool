@@ -5,7 +5,7 @@ use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
 use crate::extractors::admin::CreateAdminUser;
-use crate::models::admin_users;
+use openschool_models::admin_users;
 use crate::repositories::base::Repository;
 
 #[derive(Debug, Clone)]

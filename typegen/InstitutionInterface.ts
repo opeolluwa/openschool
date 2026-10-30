@@ -6,10 +6,10 @@ export type InstitutionInterface = {
   name: string;
   tagline: string;
   logoUrl: string;
-  addressIdentifier: Array<number>;
+  addressIdentifier: Array<number> | null;
   institutionType: InstitutionType;
   createdAt: string;
   updatedAt: string | null;
-  gradingSystemIdentifier: Array<number>;
-  academicCalendarIdentifier: Array<number>;
+  gradingSystemIdentifier: Array<number> | null;
+  academicCalendarIdentifier: Array<number> | null;
 };

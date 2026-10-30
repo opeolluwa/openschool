@@ -4468,6 +4468,8 @@ dependencies = [
  "openschool_macros",
  "openschool_mailman",
  "openschool_migration",
+ "openschool_models",
+ "openschool_remittance",
  "rand 0.10.3",
  "redis 1.8.0",
  "reqwest",
@@ -4584,8 +4586,34 @@ dependencies = [
 ]
 
 [[package]]
-name = "openschool_remitance"
+name = "openschool_models"
 version = "0.1.0"
+dependencies = [
+ "openschool_macros",
+ "sea-orm 2.0.4",
+ "serde",
+ "serde_json",
+ "ts-rs",
+ "ulid",
+]
+
+[[package]]
+name = "openschool_remittance"
+version = "0.1.0"
+dependencies = [
+ "mockall",
+ "openschool_kernel",
+ "openschool_models",
+ "reqwest",
+ "sea-orm 2.0.4",
+ "secrecy",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tracing",
+ "ulid",
+]
 
 [[package]]
 name = "openssl-probe"

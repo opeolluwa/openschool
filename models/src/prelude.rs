@@ -9,5 +9,7 @@ pub use super::admission_applicant_guardian_data::Entity as AdmissionApplicantGu
 pub use super::contact_address::Entity as ContactAddress;
 pub use super::grading_system::Entity as GradingSystem;
 pub use super::institution::Entity as Institution;
+pub use super::invoice::Entity as Invoice;
 pub use super::one_time_passwords::Entity as OneTimePasswords;
+pub use super::payment_transaction::Entity as PaymentTransaction;
 pub use super::seaql_migrations::Entity as SeaqlMigrations;

@@ -1,5 +1,7 @@
 use serde::Serialize;
 
+use openschool_models::{admin_users, contact_address, institution};
+
 use crate::{
     adapters::claims::{Claims, EntityKind, TokenType},
     errors::{
@@ -10,7 +12,6 @@ use crate::{
     extractors::contact_address::ContactAddressPayload,
     extractors::institution::RegisterInstitution,
     extractors::onboarding::RegisterAcademics,
-    models::{admin_users, contact_address, institution},
     repositories::academic_calendar::{AcademicCalendarRepository, AcademicCalendarRepositoryExt},
     repositories::admin_user::{AdminUserRepository, AdminUserRepositoryExt},
     repositories::contact_address::{ContactAddressRepository, ContactAddressRepositoryExt},

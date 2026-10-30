@@ -2,8 +2,8 @@ use sea_orm::{ActiveModelTrait, ActiveValue::Set, DatabaseConnection};
 use ulid::Ulid;
 
 use crate::errors::database_error::DatabaseError;
-use crate::models::academic_calendar;
-use crate::models::sea_orm_active_enums::AcademicCalendarType;
+use openschool_models::academic_calendar;
+use openschool_models::sea_orm_active_enums::AcademicCalendarType;
 use crate::repositories::base::Repository;
 
 #[cfg_attr(test, mockall::automock)]

@@ -14,7 +14,7 @@
 
 use rust_decimal::Decimal;
 
-use crate::models::sea_orm_active_enums::ProductCurrency;
+use openschool_models::sea_orm_active_enums::ProductCurrency;
 use crate::utils::price::MINOR_UNITS_PER_MAJOR;
 
 /// Roughly two lines of `text-xs` in the console card.

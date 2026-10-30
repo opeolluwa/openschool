@@ -17,7 +17,7 @@ use jsonwebtoken::{Algorithm, Validation, decode};
 use crate::dto::claims::{Claims, EntityKind, TokenType};
 use crate::errors::authentication_error::AuthenticationError;
 use crate::errors::service_error::ServiceError;
-use crate::models::sea_orm_active_enums::RolePermissionAction;
+use openschool_models::sea_orm_active_enums::RolePermissionAction;
 use crate::services::permission_resolver::{self, RolePermissionSet};
 use crate::services::redis::client::RedisEngineTrait;
 use crate::services::user_services::UserServiceTrait;

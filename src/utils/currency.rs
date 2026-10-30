@@ -4,34 +4,9 @@
 //! serializes as `"ngn"`. Clients expect ISO 4217 codes, so responses are
 //! emitted uppercased (`"NGN"`) instead of patching the generated enum.
 
-use std::fmt;
-
 use serde::Serializer;
 
-use crate::models::sea_orm_active_enums::ProductCurrency;
-
-impl fmt::Display for ProductCurrency {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let code = match self {
-            Self::Ngn => "ngn",
-            Self::Usd => "usd",
-            Self::Gbp => "gbp",
-            Self::Eur => "eur",
-            Self::Ghs => "ghs",
-            Self::Kes => "kes",
-            Self::Zar => "zar",
-            Self::Cad => "cad",
-            Self::Aud => "aud",
-            Self::Jpy => "jpy",
-            Self::Cny => "cny",
-            Self::Inr => "inr",
-            Self::Aed => "aed",
-            Self::Xof => "xof",
-        };
-
-        f.write_str(code)
-    }
-}
+use openschool_models::sea_orm_active_enums::ProductCurrency;
 
 pub fn serialize_currency<S>(currency: &ProductCurrency, serializer: S) -> Result<S::Ok, S::Error>
 where
